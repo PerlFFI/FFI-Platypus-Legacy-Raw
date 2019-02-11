@@ -73,8 +73,8 @@ the length of the string will be computed using C<strlen()>.
 =cut
 
 sub tostr {
-	my $self = shift;
-	return $self -> to_perl_str(@_)
+  my $self = shift;
+  return $self -> to_perl_str(@_)
 }
 
 =head1 AUTHOR

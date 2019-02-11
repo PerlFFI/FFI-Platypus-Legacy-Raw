@@ -12,14 +12,14 @@ my $source = "./t/$test.c";
 my $shared = CompileTest::compile($source);
 
 my $get_test_ptr_size = FFI::Platypus::Legacy::Raw -> new(
-	$shared, 'get_test_ptr_size', FFI::Platypus::Legacy::Raw::int
+  $shared, 'get_test_ptr_size', FFI::Platypus::Legacy::Raw::int
 );
 
 my $ptr1 = FFI::Platypus::Legacy::Raw::memptr($get_test_ptr_size -> call);
 
 my $take_one_pointer = FFI::Platypus::Legacy::Raw -> new(
-	$shared, 'take_one_pointer',
-	FFI::Platypus::Legacy::Raw::void, FFI::Platypus::Legacy::Raw::ptr
+  $shared, 'take_one_pointer',
+  FFI::Platypus::Legacy::Raw::void, FFI::Platypus::Legacy::Raw::ptr
 );
 
 $take_one_pointer -> call($ptr1);
@@ -28,23 +28,23 @@ my $return_pointer = FFI::Platypus::Legacy::Raw -> new($shared, 'return_pointer'
 my $ptr2 = $return_pointer -> call;
 
 my $return_str_from_ptr = FFI::Platypus::Legacy::Raw -> new(
-	$shared, 'return_str_from_ptr',
-	FFI::Platypus::Legacy::Raw::str, FFI::Platypus::Legacy::Raw::ptr
+  $shared, 'return_str_from_ptr',
+  FFI::Platypus::Legacy::Raw::str, FFI::Platypus::Legacy::Raw::ptr
 );
 
 my $return_int_from_ptr = FFI::Platypus::Legacy::Raw -> new(
-	$shared, 'return_int_from_ptr',
-	FFI::Platypus::Legacy::Raw::int, FFI::Platypus::Legacy::Raw::ptr
+  $shared, 'return_int_from_ptr',
+  FFI::Platypus::Legacy::Raw::int, FFI::Platypus::Legacy::Raw::ptr
 );
 
 my $return_str_from_ptr_by_ref = FFI::Platypus::Legacy::Raw -> new(
-	$shared, 'return_str_from_ptr_by_ref',
-	FFI::Platypus::Legacy::Raw::str, FFI::Platypus::Legacy::Raw::ptr
+  $shared, 'return_str_from_ptr_by_ref',
+  FFI::Platypus::Legacy::Raw::str, FFI::Platypus::Legacy::Raw::ptr
 );
 
 my $return_int_from_ptr_by_ref = FFI::Platypus::Legacy::Raw -> new(
-	$shared, 'return_int_from_ptr_by_ref',
-	FFI::Platypus::Legacy::Raw::int, FFI::Platypus::Legacy::Raw::ptr
+  $shared, 'return_int_from_ptr_by_ref',
+  FFI::Platypus::Legacy::Raw::int, FFI::Platypus::Legacy::Raw::ptr
 );
 
 my $test_str = 'some string';

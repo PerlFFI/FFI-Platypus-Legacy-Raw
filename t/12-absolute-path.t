@@ -25,16 +25,16 @@ my $one = FFI::Platypus::Legacy::Raw->new($absolute, 'one', FFI::Platypus::Legac
 is $one->(), 1, "absolute $absolute";
 
 SKIP: {
-	skip 'Cygwin/MSWin32 only', 1
-		unless $^O =~ /^(cygwin|MSWin32)$/;
+  skip 'Cygwin/MSWin32 only', 1
+    unless $^O =~ /^(cygwin|MSWin32)$/;
 
-	my $tmp = tempdir(CLEANUP => 1);
-	cp($absolute, File::Spec -> catfile($tmp, 'foo.dll'));
+  my $tmp = tempdir(CLEANUP => 1);
+  cp($absolute, File::Spec -> catfile($tmp, 'foo.dll'));
 
-	push @PATH, $tmp;
-	my $one = FFI::Platypus::Legacy::Raw -> new('foo.dll', 'one', FFI::Platypus::Legacy::Raw::int);
+  push @PATH, $tmp;
+  my $one = FFI::Platypus::Legacy::Raw -> new('foo.dll', 'one', FFI::Platypus::Legacy::Raw::int);
 
-	is $one -> (), 1, "path $tmp/foo.dll";
+  is $one -> (), 1, "path $tmp/foo.dll";
 }
 
 done_testing;

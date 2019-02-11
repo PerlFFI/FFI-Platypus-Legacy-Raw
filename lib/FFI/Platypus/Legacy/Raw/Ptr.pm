@@ -69,8 +69,8 @@ C<FFI::Platypus::Legacy::Raw::MemPtr> or a pointer returned by a C function.
 =cut
 
 sub new {
-	my($class, $ptr) = @_;
-	bless \$ptr, $class;
+  my($class, $ptr) = @_;
+  bless \$ptr, $class;
 }
 
 =head1 AUTHOR

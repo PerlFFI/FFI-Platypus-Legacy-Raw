@@ -10,14 +10,14 @@ my $source = "./t/$test.c";
 my $shared = CompileTest::compile($source);
 
 my $take_one_int_callback = FFI::Platypus::Legacy::Raw -> new(
-	$shared, 'take_one_int_callback',
-	FFI::Platypus::Legacy::Raw::void, FFI::Platypus::Legacy::Raw::ptr
+  $shared, 'take_one_int_callback',
+  FFI::Platypus::Legacy::Raw::void, FFI::Platypus::Legacy::Raw::ptr
 );
 
 my $func1 = sub {
-	my $num = shift;
+  my $num = shift;
 
-	print ($num == 42 ? "ok\n" : "not ok\n");
+  print ($num == 42 ? "ok\n" : "not ok\n");
 };
 
 my $cb1 = FFI::Platypus::Legacy::Raw::callback($func1, FFI::Platypus::Legacy::Raw::void, FFI::Platypus::Legacy::Raw::int);
@@ -28,14 +28,14 @@ $take_one_int_callback -> ($cb1);
 print "ok - survived the call\n";
 
 my $return_int_callback = FFI::Platypus::Legacy::Raw -> new(
-	$shared, 'return_int_callback',
-	FFI::Platypus::Legacy::Raw::int, FFI::Platypus::Legacy::Raw::ptr
+  $shared, 'return_int_callback',
+  FFI::Platypus::Legacy::Raw::int, FFI::Platypus::Legacy::Raw::ptr
 );
 
 my $func2 = sub {
-	my $num = shift;
+  my $num = shift;
 
-	return $num + 15;
+  return $num + 15;
 };
 
 my $cb2 = FFI::Platypus::Legacy::Raw::callback($func2, FFI::Platypus::Legacy::Raw::int, FFI::Platypus::Legacy::Raw::int);
@@ -49,9 +49,9 @@ print ($check1 == (42 + 15) ? "ok\n" : "not ok - returned $check1\n");
 print ($check2 == (42 + 15) ? "ok\n" : "not ok - returned $check2\n");
 
 sub func3 {
-	my $num = shift;
+  my $num = shift;
 
-	return $num + 15;
+  return $num + 15;
 };
 
 my $cb3 = FFI::Platypus::Legacy::Raw::callback(\&func3, FFI::Platypus::Legacy::Raw::int, FFI::Platypus::Legacy::Raw::int);
@@ -70,15 +70,15 @@ my $cb4 = FFI::Platypus::Legacy::Raw::callback(sub { $str_value }, FFI::Platypus
 print "ok - survived the call\n";
 
 my $return_str_callback = FFI::Platypus::Legacy::Raw -> new(
-	$shared, 'return_str_callback',
-	FFI::Platypus::Legacy::Raw::void, FFI::Platypus::Legacy::Raw::ptr
+  $shared, 'return_str_callback',
+  FFI::Platypus::Legacy::Raw::void, FFI::Platypus::Legacy::Raw::ptr
 );
 
 $return_str_callback -> call($cb4);
 
 my $get_str_value = FFI::Platypus::Legacy::Raw -> new(
-	$shared, 'get_str_value',
-	FFI::Platypus::Legacy::Raw::str,
+  $shared, 'get_str_value',
+  FFI::Platypus::Legacy::Raw::str,
 );
 
 my $value = $get_str_value -> call();
@@ -93,8 +93,8 @@ my $value = $get_str_value -> call();
 print ($value eq 'NULL' ? "ok\n" : "not ok - returned $value\n");
 
 my $reset = FFI::Platypus::Legacy::Raw -> new(
-	$shared, 'reset',
-	FFI::Platypus::Legacy::Raw::void,
+  $shared, 'reset',
+  FFI::Platypus::Legacy::Raw::void,
 );
 
 $reset -> call();

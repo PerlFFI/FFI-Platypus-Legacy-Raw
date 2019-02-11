@@ -10,12 +10,12 @@ require FFI::Platypus::Legacy::Raw::Ptr;
 require FFI::Platypus::Legacy::Raw::MemPtr;
 
 use overload
-	'&{}'  => \&coderef,
-	'bool' => \&_bool;
+  '&{}'  => \&coderef,
+  'bool' => \&_bool;
 
 sub _bool {
-	my $ffi = shift;
-	return $ffi;
+  my $ffi = shift;
+  return $ffi;
 }
 
 =head1 NAME
@@ -87,8 +87,8 @@ Return a code reference of a given C<FFI::Platypus::Legacy::Raw>.
 =cut
 
 sub coderef {
-	my $ffi = shift;
-	return sub { $ffi -> call(@_) };
+  my $ffi = shift;
+  return sub { $ffi -> call(@_) };
 }
 
 =head1 SUBROUTINES

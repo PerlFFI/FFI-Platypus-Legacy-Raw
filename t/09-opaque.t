@@ -18,37 +18,37 @@ no warnings 'once';
 use base qw(FFI::Platypus::Legacy::Raw::Ptr);
 
 *_foo_new = FFI::Platypus::Legacy::Raw -> new(
-	$shared, 'foo_new',
-	FFI::Platypus::Legacy::Raw::ptr
+  $shared, 'foo_new',
+  FFI::Platypus::Legacy::Raw::ptr
 ) -> coderef;
 
 sub new {
-	bless shift -> SUPER::new(_foo_new());
+  bless shift -> SUPER::new(_foo_new());
 }
 
 *get_bar = FFI::Platypus::Legacy::Raw -> new(
-	$shared, 'foo_get_bar',
-	FFI::Platypus::Legacy::Raw::int,
-	FFI::Platypus::Legacy::Raw::ptr
+  $shared, 'foo_get_bar',
+  FFI::Platypus::Legacy::Raw::int,
+  FFI::Platypus::Legacy::Raw::ptr
 ) -> coderef;
 
 *set_bar = FFI::Platypus::Legacy::Raw -> new(
-	$shared, 'foo_set_bar',
-	FFI::Platypus::Legacy::Raw::void,
-	FFI::Platypus::Legacy::Raw::ptr,
-	FFI::Platypus::Legacy::Raw::int
+  $shared, 'foo_set_bar',
+  FFI::Platypus::Legacy::Raw::void,
+  FFI::Platypus::Legacy::Raw::ptr,
+  FFI::Platypus::Legacy::Raw::int
 ) -> coderef;
 
 *get_free_count = FFI::Platypus::Legacy::Raw -> new(
-	$shared, 'get_free_count',
-	FFI::Platypus::Legacy::Raw::int,
-	FFI::Platypus::Legacy::Raw::str
+  $shared, 'get_free_count',
+  FFI::Platypus::Legacy::Raw::int,
+  FFI::Platypus::Legacy::Raw::str
 ) -> coderef;
 
 *DESTROY = FFI::Platypus::Legacy::Raw -> new(
-	$shared, 'foo_free',
-	FFI::Platypus::Legacy::Raw::void,
-	FFI::Platypus::Legacy::Raw::ptr
+  $shared, 'foo_free',
+  FFI::Platypus::Legacy::Raw::void,
+  FFI::Platypus::Legacy::Raw::ptr
 ) -> coderef;
 
 1;

@@ -70,9 +70,9 @@ is $return_uchar -> (), UCHAR_MAX;
 my $return_double = FFI::Platypus::Legacy::Raw -> new($shared, 'return_double', FFI::Platypus::Legacy::Raw::double);
 
 TODO: {
-	local $TODO = 'failing';
-	is $return_double -> call, 9.9e0;
-	is $return_double -> (), 9.9e0;
+  local $TODO = 'failing';
+  is $return_double -> call, 9.9e0;
+  is $return_double -> (), 9.9e0;
 };
 
 my $return_float = FFI::Platypus::Legacy::Raw -> new($shared, 'return_float', FFI::Platypus::Legacy::Raw::float);

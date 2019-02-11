@@ -3,5 +3,5 @@
 #include "ffi_test.h"
 
 extern EXPORT int one() {
-	return 1;
+  return 1;
 }
