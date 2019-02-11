@@ -1,10 +1,6 @@
-#!perl
-
 use strict;
 use warnings;
-
 use Test::More;
-
 use FFI::Platypus::Legacy::Raw;
 
 my $isalpha = FFI::Platypus::Legacy::Raw -> new(undef, 'isalpha', FFI::Platypus::Legacy::Raw::int, FFI::Platypus::Legacy::Raw::int);

@@ -1,7 +1,6 @@
-#!perl
-
-use lib 't';
-
+use strict;
+use warnings;
+use lib 't/lib';
 use FFI::Platypus::Legacy::Raw;
 use CompileTest;
 
@@ -88,7 +87,7 @@ print ($value eq 'foo' ? "ok\n" : "not ok - returned $value\n");
 $str_value = undef;
 $return_str_callback->call($cb4);
 
-my $value = $get_str_value -> call();
+$value = $get_str_value -> call();
 
 print ($value eq 'NULL' ? "ok\n" : "not ok - returned $value\n");
 

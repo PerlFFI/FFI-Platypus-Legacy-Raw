@@ -1,14 +1,10 @@
-#!perl
-
-use lib 't';
-
+use strict;
+use warnings;
+use lib 't/lib';
 use Test::More;
-
 use POSIX;
-
 use FFI::Platypus::Legacy::Raw;
 use CompileTest;
-
 use Math::BigInt;
 
 my $test   = '03-simple-returns';
