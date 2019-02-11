@@ -2,7 +2,7 @@
 
 use lib 't';
 
-use FFI::Raw;
+use FFI::Platypus::Legacy::Raw;
 use CompileTest;
 
 my $test   = '06-struct';
@@ -14,22 +14,22 @@ my $str_arg = "hello";
 
 my $packed = pack('ix![p]p', 42, $str_arg);
 
-my $arg = FFI::Raw::MemPtr -> new_from_buf($packed, length $packed);
+my $arg = FFI::Platypus::Legacy::Raw::MemPtr -> new_from_buf($packed, length $packed);
 
-my $take_one_struct = FFI::Raw -> new(
+my $take_one_struct = FFI::Platypus::Legacy::Raw -> new(
 	$shared, 'take_one_struct',
-	FFI::Raw::void, FFI::Raw::ptr
+	FFI::Platypus::Legacy::Raw::void, FFI::Platypus::Legacy::Raw::ptr
 );
 
 $take_one_struct -> call($arg);
 
 print "ok - survived the call\n";
 
-$arg = FFI::Raw::MemPtr -> new(length $packed);
+$arg = FFI::Platypus::Legacy::Raw::MemPtr -> new(length $packed);
 
-my $return_one_struct = FFI::Raw -> new(
+my $return_one_struct = FFI::Platypus::Legacy::Raw -> new(
 	$shared, 'return_one_struct',
-	FFI::Raw::void, FFI::Raw::ptr
+	FFI::Platypus::Legacy::Raw::void, FFI::Platypus::Legacy::Raw::ptr
 );
 
 $return_one_struct -> call($arg);

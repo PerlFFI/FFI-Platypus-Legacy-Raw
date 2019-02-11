@@ -2,7 +2,7 @@
 
 use lib 't';
 
-use FFI::Raw;
+use FFI::Platypus::Legacy::Raw;
 use CompileTest;
 
 my $test   = '07-null';
@@ -11,12 +11,12 @@ my $shared = CompileTest::compile($source);
 
 $| = 1;
 
-my $return_undef_str  = FFI::Raw -> new(
-	$shared, 'return_undef_str', FFI::Raw::str
+my $return_undef_str  = FFI::Platypus::Legacy::Raw -> new(
+	$shared, 'return_undef_str', FFI::Platypus::Legacy::Raw::str
 );
 
-my $pass_in_undef_str = FFI::Raw -> new(
-	$shared, 'pass_in_undef_str', FFI::Raw::void, FFI::Raw::str
+my $pass_in_undef_str = FFI::Platypus::Legacy::Raw -> new(
+	$shared, 'pass_in_undef_str', FFI::Platypus::Legacy::Raw::void, FFI::Platypus::Legacy::Raw::str
 );
 
 $pass_in_undef_str -> call(undef);
@@ -27,12 +27,12 @@ unless (defined $return_undef_str -> call) {
 	print "not ok 2 - returned undef\n";
 }
 
-my $return_undef_ptr  = FFI::Raw -> new(
-	$shared, 'return_undef_ptr', FFI::Raw::ptr
+my $return_undef_ptr  = FFI::Platypus::Legacy::Raw -> new(
+	$shared, 'return_undef_ptr', FFI::Platypus::Legacy::Raw::ptr
 );
 
-my $pass_in_undef_ptr = FFI::Raw -> new(
-	$shared, 'pass_in_undef_ptr', FFI::Raw::void, FFI::Raw::ptr
+my $pass_in_undef_ptr = FFI::Platypus::Legacy::Raw -> new(
+	$shared, 'pass_in_undef_ptr', FFI::Platypus::Legacy::Raw::void, FFI::Platypus::Legacy::Raw::ptr
 );
 
 $pass_in_undef_ptr -> call(undef);

@@ -220,8 +220,8 @@ void _ffi_raw_cb_wrap(ffi_cif *cif, void *ret, void *args[], void *argp) {
 				break;
 			}
 
-			if (sv_derived_from(value, "FFI::Raw::Ptr") ||
-			    sv_derived_from(value, "FFI::Raw::Callback"))
+			if (sv_derived_from(value, "FFI::Platypus::Legacy::Raw::Ptr") ||
+			    sv_derived_from(value, "FFI::Platypus::Legacy::Raw::Callback"))
 				value = SvRV(value);
 
 			*(void **) ret = INT_TO_PTR(value);
@@ -235,7 +235,7 @@ void _ffi_raw_cb_wrap(ffi_cif *cif, void *ret, void *args[], void *argp) {
 	LEAVE;
 }
 
-MODULE = FFI::Raw				PACKAGE = FFI::Raw
+MODULE = FFI::Platypus::Legacy::Raw				PACKAGE = FFI::Platypus::Legacy::Raw
 
 BOOT:
 	PERL_MATH_INT64_LOAD;
@@ -467,13 +467,13 @@ call(self, ...)
 						*val = NULL;
 					else {
 						if (sv_derived_from(
-							arg, "FFI::Raw::Ptr"
+							arg, "FFI::Platypus::Legacy::Raw::Ptr"
 						)) {
 							arg = SvRV(arg);
 						}
 
 						if (sv_derived_from(
-							arg, "FFI::Raw::Callback"
+							arg, "FFI::Platypus::Legacy::Raw::Callback"
 						)) {
 							FFI_Raw_Callback_t *cb =
 								INT_TO_PTR(SvRV(arg));

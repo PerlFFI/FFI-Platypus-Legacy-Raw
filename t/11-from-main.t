@@ -5,11 +5,11 @@ use warnings;
 
 use Test::More;
 
-use FFI::Raw;
+use FFI::Platypus::Legacy::Raw;
 
-my $isalpha = FFI::Raw -> new(undef, 'isalpha', FFI::Raw::int, FFI::Raw::int);
+my $isalpha = FFI::Platypus::Legacy::Raw -> new(undef, 'isalpha', FFI::Platypus::Legacy::Raw::int, FFI::Platypus::Legacy::Raw::int);
 
-isa_ok $isalpha, 'FFI::Raw';
+isa_ok $isalpha, 'FFI::Platypus::Legacy::Raw';
 
 ok  $isalpha -> call(ord 'a');
 ok !$isalpha -> call(ord '0');

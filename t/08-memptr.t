@@ -1,11 +1,11 @@
 #!perl
 
 use Test::More;
-use FFI::Raw;
+use FFI::Platypus::Legacy::Raw;
 
 my $greeting = "Hello\0World";
 
-my $buf = FFI::Raw::MemPtr -> new_from_buf($greeting, length $greeting);
+my $buf = FFI::Platypus::Legacy::Raw::MemPtr -> new_from_buf($greeting, length $greeting);
 
 my $got = $buf -> to_perl_str;
 

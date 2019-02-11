@@ -2,14 +2,14 @@
 
 use lib 't';
 
-use FFI::Raw;
+use FFI::Platypus::Legacy::Raw;
 use CompileTest;
 
 my $test   = '01-argless';
 my $source = "./t/$test.c";
 my $shared = CompileTest::compile($source);
 
-my $argless = FFI::Raw -> new($shared, 'argless', FFI::Raw::void);
+my $argless = FFI::Platypus::Legacy::Raw -> new($shared, 'argless', FFI::Platypus::Legacy::Raw::void);
 
 $argless -> call;
 $argless -> ();

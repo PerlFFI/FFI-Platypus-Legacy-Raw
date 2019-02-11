@@ -7,7 +7,7 @@ use warnings;
 
 use Test::More;
 
-use FFI::Raw;
+use FFI::Platypus::Legacy::Raw;
 use CompileTest;
 
 use File::Spec;
@@ -21,7 +21,7 @@ my $source   = "./t/$test.c";
 my $shared   = CompileTest::compile($source);
 my $absolute = File::Spec->rel2abs($shared);
 
-my $one = FFI::Raw->new($absolute, 'one', FFI::Raw::int);
+my $one = FFI::Platypus::Legacy::Raw->new($absolute, 'one', FFI::Platypus::Legacy::Raw::int);
 is $one->(), 1, "absolute $absolute";
 
 SKIP: {
@@ -32,7 +32,7 @@ SKIP: {
 	cp($absolute, File::Spec -> catfile($tmp, 'foo.dll'));
 
 	push @PATH, $tmp;
-	my $one = FFI::Raw -> new('foo.dll', 'one', FFI::Raw::int);
+	my $one = FFI::Platypus::Legacy::Raw -> new('foo.dll', 'one', FFI::Platypus::Legacy::Raw::int);
 
 	is $one -> (), 1, "path $tmp/foo.dll";
 }

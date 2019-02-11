@@ -1,4 +1,4 @@
-MODULE = FFI::Raw				PACKAGE = FFI::Raw::Callback
+MODULE = FFI::Platypus::Legacy::Raw				PACKAGE = FFI::Platypus::Legacy::Raw::Callback
 
 FFI_Raw_Callback_t *
 new(class, coderef, ret_type, ...)

@@ -1,9 +1,9 @@
-MODULE = FFI::Raw				PACKAGE = FFI::Raw::MemPtr
+MODULE = FFI::Platypus::Legacy::Raw				PACKAGE = FFI::Platypus::Legacy::Raw::MemPtr
 
 BOOT:
 {
-	AV *isa = get_av("FFI::Raw::MemPtr::ISA", 1);
-	av_push(isa, newSVpv("FFI::Raw::Ptr", 0));
+	AV *isa = get_av("FFI::Platypus::Legacy::Raw::MemPtr::ISA", 1);
+	av_push(isa, newSVpv("FFI::Platypus::Legacy::Raw::Ptr", 0));
 }
 
 FFI_Raw_MemPtr_t *
@@ -38,7 +38,7 @@ new_from_ptr(class, pointer)
 
 	CODE:
 		if (sv_isobject(pointer) &&
-		    sv_derived_from(pointer, "FFI::Raw::Ptr"))
+		    sv_derived_from(pointer, "FFI::Platypus::Legacy::Raw::Ptr"))
 			ptr = INT2PTR(void *, SvIV((SV *) SvRV(pointer)));
 		else
 			ptr = SvRV(pointer);
