@@ -1,11 +1,5 @@
 MODULE = FFI::Platypus::Legacy::Raw				PACKAGE = FFI::Platypus::Legacy::Raw::MemPtr
 
-BOOT:
-{
-	AV *isa = get_av("FFI::Platypus::Legacy::Raw::MemPtr::ISA", 1);
-	av_push(isa, newSVpv("FFI::Platypus::Legacy::Raw::Ptr", 0));
-}
-
 FFI_Raw_MemPtr_t *
 new(class, length)
 	SV *class

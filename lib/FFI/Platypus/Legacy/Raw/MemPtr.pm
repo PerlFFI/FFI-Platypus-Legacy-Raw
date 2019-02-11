@@ -3,6 +3,8 @@ package FFI::Platypus::Legacy::Raw::MemPtr;
 use strict;
 use warnings;
 
+our @ISA = qw( FFI::Platypus::Legacy::Raw::Ptr );
+
 =head1 NAME
 
 FFI::Platypus::Legacy::Raw::MemPtr - FFI::Platypus::Legacy::Raw memory pointer type
