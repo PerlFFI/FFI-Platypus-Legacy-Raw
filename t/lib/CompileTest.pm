@@ -21,8 +21,9 @@ sub compile {
 
   my $build = FFI::Build->new(
     'test',
-    dir    => tempdir( CLEANUP => 1, TEMPLATE => 'ffi-test-XXXXXX', DIR => '.' ),
-    cflags => '-It/ffi',
+    dir     => tempdir( CLEANUP => 1, TEMPLATE => 'ffi-test-XXXXXX', DIR => '.' ),
+    cflags  => '-It/ffi',
+    verbose => 2,
   );
 
   $build->source(
