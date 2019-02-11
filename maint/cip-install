@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -ex
+
+function dist_dir_name {
+  export CIP_DIST_DIR=$(grep ^name dist.ini | head -1 | cut -d= -f2 | sed 's/^[ ]*//' | sed 's/[ ]*$//')-$(grep ^version dist.ini | head -1 | cut -d= -f2 | sed 's/^[ ]*//' | sed 's/[ ]*$//')
+}
+
+cip sudo dzil-cpanm -n Dist::Zilla::Plugin::MakeMaker::Awesome
+cip sudo bash -c 'dzil-dzil -I. authordeps --missing | dzil-cpanm -n'
+cip exec dzil-dzil -I. build
+dist_dir_name
+cip exec bash -c "cd $CIP_DIST_DIR; cpanm -n --installdeps ."
