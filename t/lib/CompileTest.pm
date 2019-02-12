@@ -7,7 +7,6 @@ use FindBin ();
 use File::Temp qw( tempdir );
 use Test::More;
 use FFI::Build;
-use FFI::Build::File::C;
 
 sub compile {
   my ($src_file) = @_;
@@ -21,13 +20,10 @@ sub compile {
 
   my $build = FFI::Build->new(
     'test',
+    source  => [ [ C => \$src ] ],
     dir     => tempdir( CLEANUP => 1, TEMPLATE => 'ffi-test-XXXXXX', DIR => '.' ),
     cflags  => '-It/ffi',
     verbose => 2,
-  );
-
-  $build->source(
-    FFI::Build::File::C->new(\$src, build => $build, platform => $build->platform),
   );
 
   my($out, $lib, $err) = capture_merged {
