@@ -25,19 +25,19 @@ sub _bool {
 my $ffi = FFI::Platypus->new;
 $ffi->lib(undef);
 $ffi->package;
-$ffi->type('void'               => 'raw_' . ord 'v');
-$ffi->type('long'               => 'raw_' . ord 'l');
-$ffi->type('unsigned long'      => 'raw_' . ord 'L');
-$ffi->type('long long'          => 'raw_' . ord 'x');
-$ffi->type('unsigned long long' => 'raw_' . ord 'X');
-$ffi->type('int'                => 'raw_' . ord 'i');
-$ffi->type('unsigned int'       => 'raw_' . ord 'I');
-$ffi->type('signed char'        => 'raw_' . ord 'c');
-$ffi->type('unsigned char'      => 'raw_' . ord 'C');
-$ffi->type('float'              => 'raw_' . ord 'f');
-$ffi->type('double'             => 'raw_' . ord 'd');
-$ffi->type('string',            => 'raw_' . ord 's');
-$ffi->type('opaque',            => 'raw_' . ord 'p');
+$ffi->type('void'               => 'v');
+$ffi->type('long'               => 'l');
+$ffi->type('unsigned long'      => 'L');
+$ffi->type('long long'          => 'x');
+$ffi->type('unsigned long long' => 'X');
+$ffi->type('int'                => 'i');
+$ffi->type('unsigned int'       => 'I');
+$ffi->type('signed char'        => 'c');
+$ffi->type('unsigned char'      => 'C');
+$ffi->type('float'              => 'f');
+$ffi->type('double'             => 'd');
+$ffi->type('string',            => 's');
+$ffi->type('opaque',            => 'p');
 sub _ffi { $ffi }
 
 =head1 SYNOPSIS
@@ -88,6 +88,14 @@ If C<$library> is C<undef> then the function is searched in the main program.
 This method also takes a variable number of types, representing the arguments
 of the wanted function.
 
+=cut
+
+sub new
+{
+  my($class, $library, $function, @types) = @_;
+  _new($class, $library, $function, map { ord $_ } @types);
+}
+
 =head2 new_from_ptr
 
  my $ffi = FFI::Platypus::Legacy::Raw->new_from_ptr( $function_ptr, $return_type, @arg_types )
@@ -96,6 +104,14 @@ Create a new C<FFI::Platypus::Legacy::Raw> object from the C<$function_ptr> func
 
 This method also takes a variable number of types, representing the arguments
 of the wanted function.
+
+=cut
+
+sub new_from_ptr
+{
+  my($class, $ptr, @types) = @_;
+  _new_from_ptr($class, $ptr, map { ord $_ } @types);
+}
 
 =head1 METHODS
 
@@ -160,7 +176,7 @@ Return a C<FFI::Platypus::Legacy::Raw> void type.
 
 =cut
 
-sub void ()  { ord 'v' }
+sub void ()  { 'v' }
 
 =head2 int
 
@@ -170,7 +186,7 @@ Return a C<FFI::Platypus::Legacy::Raw> integer type.
 
 =cut
 
-sub int ()   { ord 'i' }
+sub int ()   { 'i' }
 
 =head2 uint
 
@@ -180,7 +196,7 @@ Return a C<FFI::Platypus::Legacy::Raw> unsigned integer type.
 
 =cut
 
-sub uint ()   { ord 'I' }
+sub uint ()   { 'I' }
 
 =head2 short
 
@@ -190,7 +206,7 @@ Return a C<FFI::Platypus::Legacy::Raw> short integer type.
 
 =cut
 
-sub short ()   { ord 'z' }
+sub short ()   { 'z' }
 
 =head2 ushort
 
@@ -200,7 +216,7 @@ Return a C<FFI::Platypus::Legacy::Raw> unsigned short integer type.
 
 =cut
 
-sub ushort ()   { ord 'Z' }
+sub ushort ()   { 'Z' }
 
 =head2 long
 
@@ -210,7 +226,7 @@ Return a C<FFI::Platypus::Legacy::Raw> long integer type.
 
 =cut
 
-sub long ()   { ord 'l' }
+sub long ()   { 'l' }
 
 =head2 ulong
 
@@ -220,7 +236,7 @@ Return a C<FFI::Platypus::Legacy::Raw> unsigned long integer type.
 
 =cut
 
-sub ulong ()   { ord 'L' }
+sub ulong ()   { 'L' }
 
 =head2 int64
 
@@ -230,7 +246,7 @@ Return a C<FFI::Platypus::Legacy::Raw> 64 bit integer type. This requires L<Math
 
 =cut
 
-sub int64 ()   { ord 'x' }
+sub int64 ()   { 'x' }
 
 =head2 uint64
 
@@ -241,7 +257,7 @@ to work.
 
 =cut
 
-sub uint64 ()   { ord 'X' }
+sub uint64 ()   { 'X' }
 
 =head2 char
 
@@ -251,7 +267,7 @@ Return a C<FFI::Platypus::Legacy::Raw> char type.
 
 =cut
 
-sub char ()  { ord 'c' }
+sub char ()  { 'c' }
 
 =head2 uchar
 
@@ -261,7 +277,7 @@ Return a C<FFI::Platypus::Legacy::Raw> unsigned char type.
 
 =cut
 
-sub uchar ()  { ord 'C' }
+sub uchar ()  { 'C' }
 
 =head2 float
 
@@ -271,7 +287,7 @@ Return a C<FFI::Platypus::Legacy::Raw> float type.
 
 =cut
 
-sub float () { ord 'f' }
+sub float () { 'f' }
 
 =head2 double
 
@@ -281,7 +297,7 @@ Return a C<FFI::Platypus::Legacy::Raw> double type.
 
 =cut
 
-sub double () { ord 'd' }
+sub double () { 'd' }
 
 =head2 str
 
@@ -291,7 +307,7 @@ Return a C<FFI::Platypus::Legacy::Raw> string type.
 
 =cut
 
-sub str ()   { ord 's' }
+sub str ()   { 's' }
 
 =head2 ptr
 
@@ -301,7 +317,7 @@ Return a C<FFI::Platypus::Legacy::Raw> pointer type.
 
 =cut
 
-sub ptr ()   { ord 'p' }
+sub ptr ()   { 'p' }
 
 =head1 SEE ALSO
 

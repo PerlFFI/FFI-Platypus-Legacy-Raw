@@ -41,11 +41,9 @@ sub new
 {
   my($class, $coderef, $ret_type, @arg_types) = @_;
 
-  $ret_type = "raw_$ret_type";
-
   my $self;
 
-  if($ret_type eq "raw_115")
+  if($ret_type eq 's')
   {
     $ret_type = 'opaque';
     my $original = $coderef;
@@ -57,8 +55,9 @@ sub new
     };
   }
 
-  if($ret_type eq 'raw_112')
+  if($ret_type eq 'p')
   {
+    $ret_type = 'opaque';
     my $original = $coderef;
     $coderef = sub {
       my $ptr = $original->(@_);
@@ -75,7 +74,7 @@ sub new
   }
 
   my $closure = _ffi->closure($coderef);
-  my $closure_type = '(' . join(',', map { "raw_$_" } @arg_types) . ")->$ret_type";
+  my $closure_type = '(' . join(',', @arg_types) . ")->$ret_type";
 
   $self = bless {
     coderef => $coderef,

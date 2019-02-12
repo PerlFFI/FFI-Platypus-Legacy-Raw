@@ -136,7 +136,7 @@ BOOT:
 	PERL_MATH_INT64_LOAD;
 
 FFI_Raw_t *
-new(class, library, function, ret_type, ...)
+_new(class, library, function, ret_type, ...)
 	SV *class
 	SV *library
 	SV *function
@@ -246,7 +246,7 @@ new(class, library, function, ret_type, ...)
 	OUTPUT: RETVAL
 
 FFI_Raw_t *
-new_from_ptr(class, function, ret_type, ...)
+_new_from_ptr(class, function, ret_type, ...)
 	SV *class
 	SV *function
 	SV *ret_type
