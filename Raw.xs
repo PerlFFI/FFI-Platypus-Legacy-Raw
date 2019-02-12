@@ -136,8 +136,7 @@ BOOT:
 	PERL_MATH_INT64_LOAD;
 
 FFI_Raw_t *
-_new(class, library, function, ret_type, ...)
-	SV *class
+_new(library, function, ret_type, ...)
 	SV *library
 	SV *function
 	SV *ret_type
@@ -239,15 +238,14 @@ _new(class, library, function, ret_type, ...)
 		if ((error = dlerror()) != NULL)
 			Perl_croak(aTHX_ "%s", error);
 #endif
-		INIT_FFI_CIF(ffi_raw, 4)
+		INIT_FFI_CIF(ffi_raw, 3)
 
 		RETVAL = ffi_raw;
 
 	OUTPUT: RETVAL
 
 FFI_Raw_t *
-_new_from_ptr(class, function, ret_type, ...)
-	SV *class
+_new_from_ptr(function, ret_type, ...)
 	SV *function
 	SV *ret_type
 
@@ -263,7 +261,7 @@ _new_from_ptr(class, function, ret_type, ...)
 		ffi_raw -> handle = NULL;
 		ffi_raw -> fn     = INT_TO_PTR(function);
 
-		INIT_FFI_CIF(ffi_raw, 3)
+		INIT_FFI_CIF(ffi_raw, 2)
 
 		RETVAL = ffi_raw;
 

@@ -92,8 +92,8 @@ of the wanted function.
 
 sub new
 {
-  my($class, $library, $function, @types) = @_;
-  _new($class, $library, $function, map { ord $_ } @types);
+  my(undef, $library, $function, @types) = @_;
+  _new($library, $function, map { ord $_ } @types);
 }
 
 =head2 new_from_ptr
@@ -109,8 +109,8 @@ of the wanted function.
 
 sub new_from_ptr
 {
-  my($class, $ptr, @types) = @_;
-  _new_from_ptr($class, $ptr, map { ord $_ } @types);
+  my(undef, $ptr, @types) = @_;
+  _new_from_ptr($ptr, map { ord $_ } @types);
 }
 
 =head1 METHODS
