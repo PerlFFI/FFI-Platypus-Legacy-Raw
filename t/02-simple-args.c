@@ -145,7 +145,10 @@ extern EXPORT void take_one_float(float x) {
   if (4.2 - x < 0.001)
     printf("ok - got passed float 4.2\n");
   else
+  {
     printf("not ok - got passed float 4.2\n");
+    printf("# got: %f\n", x);
+  }
 
   fflush(stdout);
 }
