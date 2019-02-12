@@ -49,6 +49,7 @@ sub new
     my $original = $coderef;
     $coderef = sub {
       free $self->{strptr} if $self->{strptr};
+      delete $self->{strptr};
       my $string = $original->(@_);
       return undef unless defined $string;
       $self->{strptr} = strdup($string);
@@ -87,6 +88,7 @@ sub DESTROY
 {
   my($self) = @_;
   free $self->{strptr} if $self->{strptr};
+  delete $self->{strptr};
 }
 
 =head1 CAVEATS
