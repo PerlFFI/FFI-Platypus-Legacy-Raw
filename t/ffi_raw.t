@@ -223,4 +223,19 @@ subtest 'simple-returns' => sub {
   is $return_string -> (), 'epic cuteness';
 };
 
+subtest 'overload' => sub {
+
+  my $ffi;
+  eval {
+      $ffi = FFI::Platypus::Legacy::Raw -> new('libfoo.X', 'foo', FFI::Platypus::Legacy::Raw::void);
+  };
+
+  ok !$ffi;
+
+  $ffi = FFI::Platypus::Legacy::Raw -> new($shared, 'foo', FFI::Platypus::Legacy::Raw::void);
+
+  ok $ffi;
+
+};
+
 done_testing;
