@@ -18,6 +18,8 @@ $modules{$_} = $_ for qw(
   FFI::Build::MM
   FFI::Platypus
   Math::Int64
+  Test2::Tools::FFI
+  Test2::V0
   Test::More
 );
 
