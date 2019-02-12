@@ -473,9 +473,12 @@ call(self, ...)
 						if (sv_derived_from(
 							arg, "FFI::Platypus::Legacy::Raw::Callback"
 						)) {
-							FFI_Raw_Callback_t *cb =
-								INT_TO_PTR(SvRV(arg));
-							*val = cb -> fn;
+							SV **value;
+							value = hv_fetch(SvRV(arg), "ptr", 3, 0);
+							if(value == NULL)
+								*val = NULL;
+							else
+								*val = INT_TO_PTR(*value);
 						} else
 							*val = INT_TO_PTR(arg);
 					}
@@ -561,4 +564,3 @@ DESTROY(self)
 		Safefree(self -> args);
 		Safefree(self);
 
-INCLUDE: xs/Callback.xs

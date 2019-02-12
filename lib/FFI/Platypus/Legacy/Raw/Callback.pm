@@ -2,9 +2,15 @@ package FFI::Platypus::Legacy::Raw::Callback;
 
 use strict;
 use warnings;
+use FFI::Platypus::Memory qw( strdup free );
 
 # ABSTRACT: FFI::Platypus::Legacy::Raw function pointer type
 # VERSION
+
+sub _ffi
+{
+  FFI::Platypus::Legacy::Raw::_ffi();
+}
 
 =head1 DESCRIPTION
 
@@ -28,6 +34,61 @@ be passed to functions taking a C<FFI::Platypus::Legacy::Raw::ptr> type.
 
 Create a C<FFI::Platypus::Legacy::Raw::Callback> using the code reference C<$coderef> as body. The
 signature (return and arguments types) must also be passed.
+
+=cut
+
+sub new
+{
+  my($class, $coderef, $ret_type, @arg_types) = @_;
+
+  $ret_type = "raw_$ret_type";
+
+  my $self;
+
+  if($ret_type eq "raw_115")
+  {
+    $ret_type = 'opaque';
+    my $original = $coderef;
+    $coderef = sub {
+      free $self->{strptr} if $self->{strptr};
+      my $string = $original->(@_);
+      return undef unless defined $string;
+      $self->{strptr} = strdup($string);
+    };
+  }
+
+  if($ret_type eq 'raw_112')
+  {
+    my $original = $coderef;
+    $coderef = sub {
+      my $ptr = $original->(@_);
+      return undef unless defined $ptr;
+      if(ref $ptr)
+      {
+        if(eval { $ptr->isa('FFI::Platypus::Legacy::Raw::Ptr') })
+        { $ptr = $$ptr }
+        elsif(eval { $ptr->isa('FFI::Platypus::Legacy::Raw::Callback') })
+        { $ptr = $ptr->{ptr} }
+      }
+      $ptr;
+    };
+  }
+
+  my $closure = _ffi->closure($coderef);
+  my $closure_type = '(' . join(',', map { "raw_$_" } @arg_types) . ")->$ret_type";
+
+  $self = bless {
+    coderef => $coderef,
+    closure => $closure,
+    ptr     => _ffi->cast($closure_type => 'opaque', $closure),
+  }, $class;
+}
+
+sub DESTROY
+{
+  my($self) = @_;
+  free $self->{strptr} if $self->{strptr};
+}
 
 =head1 CAVEATS
 

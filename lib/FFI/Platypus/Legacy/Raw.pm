@@ -25,6 +25,19 @@ sub _bool {
 my $ffi = FFI::Platypus->new;
 $ffi->lib(undef);
 $ffi->package;
+$ffi->type('void'               => 'raw_' . ord 'v');
+$ffi->type('long'               => 'raw_' . ord 'l');
+$ffi->type('unsigned long'      => 'raw_' . ord 'L');
+$ffi->type('long long'          => 'raw_' . ord 'x');
+$ffi->type('unsigned long long' => 'raw_' . ord 'X');
+$ffi->type('int'                => 'raw_' . ord 'i');
+$ffi->type('unsigned int'       => 'raw_' . ord 'I');
+$ffi->type('signed char'        => 'raw_' . ord 'c');
+$ffi->type('unsigned char'      => 'raw_' . ord 'C');
+$ffi->type('float'              => 'raw_' . ord 'f');
+$ffi->type('double'             => 'raw_' . ord 'd');
+$ffi->type('string',            => 'raw_' . ord 's');
+$ffi->type('opaque',            => 'raw_' . ord 'p');
 sub _ffi { $ffi }
 
 =head1 SYNOPSIS
