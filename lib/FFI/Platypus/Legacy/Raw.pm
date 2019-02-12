@@ -41,6 +41,15 @@ sub _ffi { $ffi }
 
 =head1 DESCRIPTION
 
+B<FFI::Platypus::Legacy::Raw> and friends are a fork of L<FFI::Raw> that uses L<FFI::Platypus>
+instead of L<FFI::Raw>'s own libffi implementation.  It is intended for use when migrating from
+L<FFI::Raw> to L<FFI::Platypus>.  The main reason one might have for switching from Raw to Platypus
+is because Platypus is actively maintained, provides a more powerful interface, can be much faster
+when functions are "attached", and works on more platforms than Raw.  This module should be a drop
+in replacement for L<FFI::Raw>, simply replace all instances of C<FFI::Raw> to
+C<FFI::Platypus::Legacy::Raw>.  See also L<Alt::FFI::Raw::Platypus> for a way to use this module
+without making any source code changes.
+
 B<FFI::Platypus::Legacy::Raw> provides a low-level foreign function interface (FFI) for Perl based
 on L<libffi|http://sourceware.org/libffi/>. In essence, it can access and call
 functions exported by shared libraries without the need to write C/XS code.
@@ -283,7 +292,7 @@ sub ptr ()   { ord 'p' }
 
 =head1 SEE ALSO
 
-L<FFI>, L<Ctypes|http://gitorious.org/perl-ctypes>
+L<FFI::Platypus>, L<Alt::FFI::Raw::Platypus>
 
 =cut
 

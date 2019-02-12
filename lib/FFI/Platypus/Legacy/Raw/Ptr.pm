@@ -52,6 +52,15 @@ use warnings;
 
 =head1 DESCRIPTION
 
+B<FFI::Platypus::Legacy::Raw> and friends are a fork of L<FFI::Raw> that uses L<FFI::Platypus>
+instead of L<FFI::Raw>'s own libffi implementation.  It is intended for use when migrating from
+L<FFI::Raw> to L<FFI::Platypus>.  The main reason one might have for switching from Raw to Platypus
+is because Platypus is actively maintained, provides a more powerful interface, can be much faster
+when functions are "attached", and works on more platforms than Raw.  This module should be a drop
+in replacement for L<FFI::Raw>, simply replace all instances of C<FFI::Raw> to
+C<FFI::Platypus::Legacy::Raw>.  See also L<Alt::FFI::Raw::Platypus> for a way to use this module
+without making any source code changes.
+
 A B<FFI::Platypus::Legacy::Raw::Ptr> represents a pointer to memory which can be passed to
 functions taking a C<FFI::Platypus::Legacy::Raw::ptr> argument.
 

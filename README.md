@@ -16,6 +16,15 @@ Perl bindings to the portable FFI library (libffi)
 
 # DESCRIPTION
 
+**FFI::Platypus::Legacy::Raw** and friends are a fork of [FFI::Raw](https://metacpan.org/pod/FFI::Raw) that uses [FFI::Platypus](https://metacpan.org/pod/FFI::Platypus)
+instead of [FFI::Raw](https://metacpan.org/pod/FFI::Raw)'s own libffi implementation.  It is intended for use when migrating from
+[FFI::Raw](https://metacpan.org/pod/FFI::Raw) to [FFI::Platypus](https://metacpan.org/pod/FFI::Platypus).  The main reason one might have for switching from Raw to Platypus
+is because Platypus is actively maintained, provides a more powerful interface, can be much faster
+when functions are "attached", and works on more platforms than Raw.  This module should be a drop
+in replacement for [FFI::Raw](https://metacpan.org/pod/FFI::Raw), simply replace all instances of `FFI::Raw` to
+`FFI::Platypus::Legacy::Raw`.  See also [Alt::FFI::Raw::Platypus](https://metacpan.org/pod/Alt::FFI::Raw::Platypus) for a way to use this module
+without making any source code changes.
+
 **FFI::Platypus::Legacy::Raw** provides a low-level foreign function interface (FFI) for Perl based
 on [libffi](http://sourceware.org/libffi/). In essence, it can access and call
 functions exported by shared libraries without the need to write C/XS code.
@@ -183,7 +192,7 @@ Return a `FFI::Platypus::Legacy::Raw` pointer type.
 
 # SEE ALSO
 
-[FFI](https://metacpan.org/pod/FFI), [Ctypes](http://gitorious.org/perl-ctypes)
+[FFI::Platypus](https://metacpan.org/pod/FFI::Platypus), [Alt::FFI::Raw::Platypus](https://metacpan.org/pod/Alt::FFI::Raw::Platypus)
 
 # AUTHOR
 
