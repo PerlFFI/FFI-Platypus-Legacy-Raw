@@ -8,7 +8,7 @@ my $test   = '05-callbacks';
 my $source = "./t/$test.c";
 my $shared = CompileTest::compile($source);
 
-my $take_one_int_callback = FFI::Platypus::Legacy::Raw -> new(
+my $take_one_int_callback = FFI::Platypus::Legacy::Raw->new(
   $shared, 'take_one_int_callback',
   FFI::Platypus::Legacy::Raw::void, FFI::Platypus::Legacy::Raw::ptr
 );
@@ -21,12 +21,12 @@ my $func1 = sub {
 
 my $cb1 = FFI::Platypus::Legacy::Raw::callback($func1, FFI::Platypus::Legacy::Raw::void, FFI::Platypus::Legacy::Raw::int);
 
-$take_one_int_callback -> call($cb1);
-$take_one_int_callback -> ($cb1);
+$take_one_int_callback->call($cb1);
+$take_one_int_callback->($cb1);
 
 print "ok - survived the call\n";
 
-my $return_int_callback = FFI::Platypus::Legacy::Raw -> new(
+my $return_int_callback = FFI::Platypus::Legacy::Raw->new(
   $shared, 'return_int_callback',
   FFI::Platypus::Legacy::Raw::int, FFI::Platypus::Legacy::Raw::ptr
 );
@@ -39,8 +39,8 @@ my $func2 = sub {
 
 my $cb2 = FFI::Platypus::Legacy::Raw::callback($func2, FFI::Platypus::Legacy::Raw::int, FFI::Platypus::Legacy::Raw::int);
 
-my $check1 = $return_int_callback -> call($cb2);
-my $check2 = $return_int_callback -> ($cb2);
+my $check1 = $return_int_callback->call($cb2);
+my $check2 = $return_int_callback->($cb2);
 
 print "ok - survived the call\n";
 
@@ -55,8 +55,8 @@ sub func3 {
 
 my $cb3 = FFI::Platypus::Legacy::Raw::callback(\&func3, FFI::Platypus::Legacy::Raw::int, FFI::Platypus::Legacy::Raw::int);
 
-$check1 = $return_int_callback -> call($cb3);
-$check2 = $return_int_callback -> ($cb3);
+$check1 = $return_int_callback->call($cb3);
+$check2 = $return_int_callback->($cb3);
 
 print "ok - survived the call (anonymous subroutine)\n";
 
@@ -68,66 +68,66 @@ my $cb4 = FFI::Platypus::Legacy::Raw::callback(sub { $str_value }, FFI::Platypus
 
 print "ok - survived the call\n";
 
-my $return_str_callback = FFI::Platypus::Legacy::Raw -> new(
+my $return_str_callback = FFI::Platypus::Legacy::Raw->new(
   $shared, 'return_str_callback',
   FFI::Platypus::Legacy::Raw::void, FFI::Platypus::Legacy::Raw::ptr
 );
 
-$return_str_callback -> call($cb4);
+$return_str_callback->call($cb4);
 
-my $get_str_value = FFI::Platypus::Legacy::Raw -> new(
+my $get_str_value = FFI::Platypus::Legacy::Raw->new(
   $shared, 'get_str_value',
   FFI::Platypus::Legacy::Raw::str,
 );
 
-my $value = $get_str_value -> call();
+my $value = $get_str_value->call();
 
 print ($value eq 'foo' ? "ok\n" : "not ok - returned $value\n");
 
 $str_value = undef;
 $return_str_callback->call($cb4);
 
-$value = $get_str_value -> call();
+$value = $get_str_value->call();
 
 print ($value eq 'NULL' ? "ok\n" : "not ok - returned $value\n");
 
-my $reset = FFI::Platypus::Legacy::Raw -> new(
+my $reset = FFI::Platypus::Legacy::Raw->new(
   $shared, 'reset',
   FFI::Platypus::Legacy::Raw::void,
 );
 
-$reset -> call();
-my $buffer = FFI::Platypus::Legacy::Raw::MemPtr -> new_from_buf("bar\0", length "bar\0");
+$reset->call();
+my $buffer = FFI::Platypus::Legacy::Raw::MemPtr->new_from_buf("bar\0", length "bar\0");
 my $cb5 = FFI::Platypus::Legacy::Raw::callback(sub { $buffer }, FFI::Platypus::Legacy::Raw::ptr);
 
 print "ok - survived the call\n";
 
-$return_str_callback -> call($cb5);
+$return_str_callback->call($cb5);
 
-$value = $get_str_value -> call();
+$value = $get_str_value->call();
 
 print ($value eq 'bar' ? "ok\n" : "not ok - returned $value\n");
 
-$reset -> call();
-$buffer = FFI::Platypus::Legacy::Raw::MemPtr -> new_from_buf("baz\0", length "baz\0");
+$reset->call();
+$buffer = FFI::Platypus::Legacy::Raw::MemPtr->new_from_buf("baz\0", length "baz\0");
 my $cb6 = FFI::Platypus::Legacy::Raw::callback(sub { $$buffer }, FFI::Platypus::Legacy::Raw::ptr);
 
 print "ok - survived the call\n";
 
-$return_str_callback -> call($cb6);
+$return_str_callback->call($cb6);
 
-$value = $get_str_value -> call();
+$value = $get_str_value->call();
 
 print ($value eq 'baz' ? "ok\n" : "not ok - returned $value\n");
 
-$reset -> call();
+$reset->call();
 my $cb7 = FFI::Platypus::Legacy::Raw::callback(sub { undef }, FFI::Platypus::Legacy::Raw::ptr);
 
 print "ok - survived the call\n";
 
-$return_str_callback -> call($cb7);
+$return_str_callback->call($cb7);
 
-$value = $get_str_value -> call();
+$value = $get_str_value->call();
 
 print ($value eq 'NULL' ? "ok\n" : "not ok - returned $value\n");
 
