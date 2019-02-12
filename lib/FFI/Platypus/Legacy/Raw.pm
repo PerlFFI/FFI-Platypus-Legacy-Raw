@@ -7,6 +7,9 @@ use FFI::Platypus::Legacy::Raw::Callback;
 use FFI::Platypus::Legacy::Raw::Ptr;
 use FFI::Platypus::Legacy::Raw::MemPtr;
 
+# ABSTRACT: Perl bindings to the portable FFI library (libffi)
+# VERSION
+
 require XSLoader;
 XSLoader::load('FFI::Platypus::Legacy::Raw', $FFI::Platypus::Legacy::Raw::VERSION);
 
@@ -23,10 +26,6 @@ my $ffi = FFI::Platypus->new;
 $ffi->lib(undef);
 $ffi->package;
 sub _ffi { $ffi }
-
-=head1 NAME
-
-FFI::Platypus::Legacy::Raw - Perl bindings to the portable FFI library (libffi)
 
 =head1 SYNOPSIS
 
@@ -282,23 +281,9 @@ Return a C<FFI::Platypus::Legacy::Raw> pointer type.
 
 sub ptr ()   { ord 'p' }
 
-=head1 AUTHOR
-
-Alessandro Ghedini <alexbio@cpan.org>
-
 =head1 SEE ALSO
 
 L<FFI>, L<Ctypes|http://gitorious.org/perl-ctypes>
-
-=head1 LICENSE AND COPYRIGHT
-
-Copyright 2012 Alessandro Ghedini.
-
-This program is free software; you can redistribute it and/or modify it
-under the terms of either: the GNU General Public License as published
-by the Free Software Foundation; or the Artistic License.
-
-See http://dev.perl.org/licenses/ for more information.
 
 =cut
 

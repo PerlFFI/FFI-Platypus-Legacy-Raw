@@ -7,16 +7,15 @@ use FFI::Platypus::Legacy::Raw;
 use FFI::Platypus::Memory qw( malloc free memcpy );
 use FFI::Platypus::Buffer qw( scalar_to_buffer buffer_to_scalar );
 
+# ABSTRACT: FFI::Platypus::Legacy::Raw memory pointer type
+# VERSION
+
 our @ISA = qw( FFI::Platypus::Legacy::Raw::Ptr );
 
 sub _ffi
 {
   FFI::Platypus::Legacy::Raw::_ffi();
 }
-
-=head1 NAME
-
-FFI::Platypus::Legacy::Raw::MemPtr - FFI::Platypus::Legacy::Raw memory pointer type
 
 =head1 DESCRIPTION
 
@@ -163,21 +162,5 @@ sub tostr {
   my $self = shift;
   return $self -> to_perl_str(@_)
 }
-
-=head1 AUTHOR
-
-Alessandro Ghedini <alexbio@cpan.org>
-
-=head1 LICENSE AND COPYRIGHT
-
-Copyright 2013 Alessandro Ghedini.
-
-This program is free software; you can redistribute it and/or modify it
-under the terms of either: the GNU General Public License as published
-by the Free Software Foundation; or the Artistic License.
-
-See http://dev.perl.org/licenses/ for more information.
-
-=cut
 
 1;
