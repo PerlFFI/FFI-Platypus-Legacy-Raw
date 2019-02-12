@@ -110,7 +110,7 @@ sub coderef {
 
 =head2 memptr
 
- my $memptr = FFI::Platypus::Legacy::Raw->memptr( $length );
+ my $memptr = FFI::Platypus::Legacy::Raw::memptr( $length );
 
 Create a L<FFI::Platypus::Legacy::Raw::MemPtr>. This is a shortcut for C<FFI::Platypus::Legacy::Raw::MemPtr-E<gt>new(...)>.
 
@@ -120,7 +120,7 @@ sub memptr { FFI::Platypus::Legacy::Raw::MemPtr -> new(@_) }
 
 =head2 callback
 
- my $callback = FFI::Platypus::Legacy::Raw->callback( $coderef, $ret_type, \@arg_types );
+ my $callback = FFI::Platypus::Legacy::Raw::callback( $coderef, $ret_type, \@arg_types );
 
 Create a L<FFI::Platypus::Legacy::Raw::Callback>. This is a shortcut for C<FFI::Platypus::Legacy::Raw::Callback-E<gt>new(...)>.
 

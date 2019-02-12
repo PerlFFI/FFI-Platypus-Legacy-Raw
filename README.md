@@ -78,13 +78,13 @@ Return a code reference of a given `FFI::Platypus::Legacy::Raw`.
 
 ## memptr
 
-    my $memptr = FFI::Platypus::Legacy::Raw->memptr( $length );
+    my $memptr = FFI::Platypus::Legacy::Raw::memptr( $length );
 
 Create a [FFI::Platypus::Legacy::Raw::MemPtr](https://metacpan.org/pod/FFI::Platypus::Legacy::Raw::MemPtr). This is a shortcut for `FFI::Platypus::Legacy::Raw::MemPtr->new(...)`.
 
 ## callback
 
-    my $callback = FFI::Platypus::Legacy::Raw->callback( $coderef, $ret_type, \@arg_types );
+    my $callback = FFI::Platypus::Legacy::Raw::callback( $coderef, $ret_type, \@arg_types );
 
 Create a [FFI::Platypus::Legacy::Raw::Callback](https://metacpan.org/pod/FFI::Platypus::Legacy::Raw::Callback). This is a shortcut for `FFI::Platypus::Legacy::Raw::Callback->new(...)`.
 
