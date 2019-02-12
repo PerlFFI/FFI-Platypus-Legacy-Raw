@@ -20,24 +20,3 @@ new_from_ptr(class, pointer)
 
 	OUTPUT: RETVAL
 
-SV *
-to_perl_str(self, ...)
-	FFI_Raw_MemPtr_t *self
-
-	PROTOTYPE: $;$
-
-	CODE:
-		switch (items) {
-			case 1:
-				RETVAL = newSVpv(self, 0);
-				break;
-
-			case 2:
-				RETVAL = newSVpvn(self, SvUV(ST(1)));
-				break;
-
-			default: Perl_croak(aTHX_ "Wrong number of arguments");
-		}
-
-	OUTPUT: RETVAL
-

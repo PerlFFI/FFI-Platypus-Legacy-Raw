@@ -12,9 +12,11 @@ FFI::Platypus::Legacy::Raw::Callback - FFI::Platypus::Legacy::Raw function point
 A B<FFI::Platypus::Legacy::Raw::Callback> represents a function pointer to a Perl routine. It can
 be passed to functions taking a C<FFI::Platypus::Legacy::Raw::ptr> type.
 
-=head1 METHODS
+=head1 CONSTRUCTOR
 
-=head2 new( $coderef, $ret_type [, $arg_type ...] )
+=head2 new
+
+ my $callback = FFI::Platypus::Legacy::Raw::Callback->new( $coderef, $ret_type, @arg_types );
 
 Create a C<FFI::Platypus::Legacy::Raw::Callback> using the code reference C<$coderef> as body. The
 signature (return and arguments types) must also be passed.
@@ -43,4 +45,4 @@ See http://dev.perl.org/licenses/ for more information.
 
 =cut
 
-1; # End of FFI::Platypus::Legacy::Raw::Callback
+1;

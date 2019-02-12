@@ -3,10 +3,16 @@ package FFI::Platypus::Legacy::Raw::MemPtr;
 use strict;
 use warnings;
 use Carp qw( croak );
+use FFI::Platypus::Legacy::Raw;
 use FFI::Platypus::Memory qw( malloc free memcpy );
-use FFI::Platypus::Buffer qw( scalar_to_buffer );
+use FFI::Platypus::Buffer qw( scalar_to_buffer buffer_to_scalar );
 
 our @ISA = qw( FFI::Platypus::Legacy::Raw::Ptr );
+
+sub _ffi
+{
+  FFI::Platypus::Legacy::Raw::_ffi();
+}
 
 =head1 NAME
 
@@ -54,29 +60,29 @@ to create the actual struct content.
 
 For example, consider the following C code
 
-    struct some_struct {
-      int some_int;
-      char some_str[];
-    };
-
-    extern void take_one_struct(struct some_struct *arg) {
-      if (arg -> some_int == 42)
-        puts(arg -> some_str);
-    }
+ struct some_struct {
+   int some_int;
+   char some_str[];
+ };
+ 
+ extern void take_one_struct(struct some_struct *arg) {
+   if (arg -> some_int == 42)
+     puts(arg -> some_str);
+ }
 
 It can be called using FFI::Platypus::Legacy::Raw as follows:
 
-    use FFI::Platypus::Legacy::Raw;
-
-    my $packed = pack('ix![p]p', 42, 'hello');
-    my $arg = FFI::Platypus::Legacy::Raw::MemPtr -> new_from_buf($packed, length $packed);
-
-    my $take_one_struct = FFI::Platypus::Legacy::Raw -> new(
-      $shared, 'take_one_struct',
-      FFI::Platypus::Legacy::Raw::void, FFI::Platypus::Legacy::Raw::ptr
-    );
-
-    $take_one_struct -> ($arg);
+ use FFI::Platypus::Legacy::Raw;
+ 
+ my $packed = pack('ix![p]p', 42, 'hello');
+ my $arg = FFI::Platypus::Legacy::Raw::MemPtr -> new_from_buf($packed, length $packed);
+ 
+ my $take_one_struct = FFI::Platypus::Legacy::Raw -> new(
+   $shared, 'take_one_struct',
+   FFI::Platypus::Legacy::Raw::void, FFI::Platypus::Legacy::Raw::ptr
+ );
+ 
+ $take_one_struct -> ($arg);
 
 Which would print C<hello>.
 
@@ -127,22 +133,23 @@ the length of the string will be computed using C<strlen()>.
 =cut
 
 ## NOTE: prototype for a method is kind of dumb but we are including it for
-## compatability with FFI::Raw
-#sub to_perl_str ($;$)
-#{
-#  my($self, $size) = @_;
-#  if(@_ == 1)
-#  {
-#    
-#  }
-#  elsif(@_ == 2)
-#  {
-#  }
-#  else
-#  {
-#    croak "Wrong number of arguments";
-#  }
-#}
+## full compatability with FFI::Raw
+sub to_perl_str ($;$)
+{
+  my($self, $size) = @_;
+  if(@_ == 1)
+  {
+    return _ffi->cast('opaque' => 'string', $$self);
+  }
+  elsif(@_ == 2)
+  {
+    return buffer_to_scalar($$self, $size);
+  }
+  else
+  {
+    croak "Wrong number of arguments";
+  }
+}
 
 =for Pod::Coverage tostr
 
@@ -169,4 +176,4 @@ See http://dev.perl.org/licenses/ for more information.
 
 =cut
 
-1; # End of FFI::Platypus::Legacy::Raw::MemPtr
+1;

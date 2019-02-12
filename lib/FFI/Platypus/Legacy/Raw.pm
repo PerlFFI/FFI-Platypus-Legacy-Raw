@@ -2,15 +2,13 @@ package FFI::Platypus::Legacy::Raw;
 
 use strict;
 use warnings;
+use FFI::Platypus;
 use FFI::Platypus::Legacy::Raw::Callback;
 use FFI::Platypus::Legacy::Raw::Ptr;
 use FFI::Platypus::Legacy::Raw::MemPtr;
 
 require XSLoader;
 XSLoader::load('FFI::Platypus::Legacy::Raw', $FFI::Platypus::Legacy::Raw::VERSION);
-
-require FFI::Platypus::Legacy::Raw::Ptr;
-require FFI::Platypus::Legacy::Raw::MemPtr;
 
 use overload
   '&{}'  => \&coderef,
@@ -21,21 +19,24 @@ sub _bool {
   return $ffi;
 }
 
+my $ffi = FFI::Platypus->new;
+sub _ffi { $ffi }
+
 =head1 NAME
 
 FFI::Platypus::Legacy::Raw - Perl bindings to the portable FFI library (libffi)
 
 =head1 SYNOPSIS
 
-    use FFI::Platypus::Legacy::Raw;
-
-    my $cos = FFI::Platypus::Legacy::Raw -> new(
-      'libm.so', 'cos',
-      FFI::Platypus::Legacy::Raw::double, # return value
-      FFI::Platypus::Legacy::Raw::double  # arg #1
-    );
-
-    say $cos -> call(2.0);
+ use FFI::Platypus::Legacy::Raw;
+ 
+ my $cos = FFI::Platypus::Legacy::Raw -> new(
+   'libm.so', 'cos',
+   FFI::Platypus::Legacy::Raw::double, # return value
+   FFI::Platypus::Legacy::Raw::double  # arg #1
+ );
+ 
+ say $cos -> call(2.0);
 
 =head1 DESCRIPTION
 
@@ -50,9 +51,11 @@ possible to pass a function pointer obtained, for example, using L<DynaLoader>).
 
 Note that this module has nothing to do with L<FFI>.
 
-=head1 METHODS
+=head1 CONSTRUCTORS
 
-=head2 new( $library, $function, $return_type [, $arg_type ...] )
+=head2 new
+
+ my $ffi = FFI::Platypus::Legacy::Raw->new( $library, $function, $return_type, @arg_types )
 
 Create a new C<FFI::Platypus::Legacy::Raw> object. It loads C<$library>, finds the function
 C<$function> with return type C<$return_type> and creates a calling interface.
@@ -62,14 +65,20 @@ If C<$library> is C<undef> then the function is searched in the main program.
 This method also takes a variable number of types, representing the arguments
 of the wanted function.
 
-=head2 new_from_ptr( $function_ptr, $return_type [, $arg_type ...] )
+=head2 new_from_ptr
+
+ my $ffi = FFI::Platypus::Legacy::Raw->new_from_ptr( $function_ptr, $return_type, @arg_types )
 
 Create a new C<FFI::Platypus::Legacy::Raw> object from the C<$function_ptr> function pointer.
 
 This method also takes a variable number of types, representing the arguments
 of the wanted function.
 
-=head2 call( [$arg ...] )
+=head1 METHODS
+
+=head2 call
+
+ my $ret = $ffi->call( @args)
 
 Execute the C<FFI::Platypus::Legacy::Raw> function. This method also takes a variable number of
 arguments, which are passed to the called function. The argument types must
@@ -78,12 +87,14 @@ match the types passed to C<new> (or C<new_from_ptr>).
 The C<FFI::Platypus::Legacy::Raw> object can be used as a CODE reference as well. Dereferencing
 the object will work just like call():
 
-    $cos -> call(2.0); # normal call() call
-    $cos -> (2.0);     # dereference as CODE ref
+ $cos -> call(2.0); # normal call() call
+ $cos -> (2.0);     # dereference as CODE ref
 
 This works because FFI::Platypus::Legacy::Raw overloads the C<&{}> operator.
 
-=head2 coderef( )
+=head2 coderef
+
+ my $code = FFI::Platypus::Legacy::Raw->coderef;
 
 Return a code reference of a given C<FFI::Platypus::Legacy::Raw>.
 
@@ -96,7 +107,9 @@ sub coderef {
 
 =head1 SUBROUTINES
 
-=head2 memptr( $length )
+=head2 memptr
+
+ my $memptr = FFI::Platypus::Legacy::Raw->memptr( $length );
 
 Create a L<FFI::Platypus::Legacy::Raw::MemPtr>. This is a shortcut for C<FFI::Platypus::Legacy::Raw::MemPtr-E<gt>new(...)>.
 
@@ -104,7 +117,9 @@ Create a L<FFI::Platypus::Legacy::Raw::MemPtr>. This is a shortcut for C<FFI::Pl
 
 sub memptr { FFI::Platypus::Legacy::Raw::MemPtr -> new(@_) }
 
-=head2 callback( $coderef, $ret_type [, $arg_type ...] )
+=head2 callback
+
+ my $callback = FFI::Platypus::Legacy::Raw->callback( $coderef, $ret_type, \@arg_types );
 
 Create a L<FFI::Platypus::Legacy::Raw::Callback>. This is a shortcut for C<FFI::Platypus::Legacy::Raw::Callback-E<gt>new(...)>.
 
@@ -114,7 +129,9 @@ sub callback { FFI::Platypus::Legacy::Raw::Callback -> new(@_) }
 
 =head1 TYPES
 
-=head2 FFI::Platypus::Legacy::Raw::void
+=head2 void
+
+ my $type = FFI::Platypus::Legacy::Raw::void();
 
 Return a C<FFI::Platypus::Legacy::Raw> void type.
 
@@ -122,7 +139,9 @@ Return a C<FFI::Platypus::Legacy::Raw> void type.
 
 sub void ()  { ord 'v' }
 
-=head2 FFI::Platypus::Legacy::Raw::int
+=head2 int
+
+ my $type = FFI::Platypus::Legacy::Raw::int();
 
 Return a C<FFI::Platypus::Legacy::Raw> integer type.
 
@@ -130,7 +149,9 @@ Return a C<FFI::Platypus::Legacy::Raw> integer type.
 
 sub int ()   { ord 'i' }
 
-=head2 FFI::Platypus::Legacy::Raw::uint
+=head2 uint
+
+ my $type = FFI::Platypus::Legacy::Raw::uint();
 
 Return a C<FFI::Platypus::Legacy::Raw> unsigned integer type.
 
@@ -138,7 +159,9 @@ Return a C<FFI::Platypus::Legacy::Raw> unsigned integer type.
 
 sub uint ()   { ord 'I' }
 
-=head2 FFI::Platypus::Legacy::Raw::short
+=head2 short
+
+ my $type = FFI::Platypus::Legacy::Raw::short();
 
 Return a C<FFI::Platypus::Legacy::Raw> short integer type.
 
@@ -146,7 +169,9 @@ Return a C<FFI::Platypus::Legacy::Raw> short integer type.
 
 sub short ()   { ord 'z' }
 
-=head2 FFI::Platypus::Legacy::Raw::ushort
+=head2 ushort
+
+ my $type = FFI::Platypus::Legacy::Raw::ushort();
 
 Return a C<FFI::Platypus::Legacy::Raw> unsigned short integer type.
 
@@ -154,7 +179,9 @@ Return a C<FFI::Platypus::Legacy::Raw> unsigned short integer type.
 
 sub ushort ()   { ord 'Z' }
 
-=head2 FFI::Platypus::Legacy::Raw::long
+=head2 long
+
+ my $type = FFI::Platypus::Legacy::Raw::long();
 
 Return a C<FFI::Platypus::Legacy::Raw> long integer type.
 
@@ -162,7 +189,9 @@ Return a C<FFI::Platypus::Legacy::Raw> long integer type.
 
 sub long ()   { ord 'l' }
 
-=head2 FFI::Platypus::Legacy::Raw::ulong
+=head2 ulong
+
+ my $type = FFI::Platypus::Legacy::Raw::ulong();
 
 Return a C<FFI::Platypus::Legacy::Raw> unsigned long integer type.
 
@@ -170,7 +199,9 @@ Return a C<FFI::Platypus::Legacy::Raw> unsigned long integer type.
 
 sub ulong ()   { ord 'L' }
 
-=head2 FFI::Platypus::Legacy::Raw::int64
+=head2 int64
+
+ my $type = FFI::Platypus::Legacy::Raw::int64();
 
 Return a C<FFI::Platypus::Legacy::Raw> 64 bit integer type. This requires L<Math::Int64> to work.
 
@@ -178,7 +209,9 @@ Return a C<FFI::Platypus::Legacy::Raw> 64 bit integer type. This requires L<Math
 
 sub int64 ()   { ord 'x' }
 
-=head2 FFI::Platypus::Legacy::Raw::uint64
+=head2 uint64
+
+ my $type = FFI::Platypus::Legacy::Raw::uint64();
 
 Return a C<FFI::Platypus::Legacy::Raw> unsigned 64 bit integer type. This requires L<Math::Int64> 
 to work.
@@ -187,7 +220,9 @@ to work.
 
 sub uint64 ()   { ord 'X' }
 
-=head2 FFI::Platypus::Legacy::Raw::char
+=head2 char
+
+ my $type = FFI::Platypus::Legacy::Raw::char();
 
 Return a C<FFI::Platypus::Legacy::Raw> char type.
 
@@ -195,7 +230,9 @@ Return a C<FFI::Platypus::Legacy::Raw> char type.
 
 sub char ()  { ord 'c' }
 
-=head2 FFI::Platypus::Legacy::Raw::uchar
+=head2 uchar
+
+ my $type = FFI::Platypus::Legacy::Raw::uchar();
 
 Return a C<FFI::Platypus::Legacy::Raw> unsigned char type.
 
@@ -203,7 +240,9 @@ Return a C<FFI::Platypus::Legacy::Raw> unsigned char type.
 
 sub uchar ()  { ord 'C' }
 
-=head2 FFI::Platypus::Legacy::Raw::float
+=head2 float
+
+ my $type = FFI::Platypus::Legacy::Raw::float();
 
 Return a C<FFI::Platypus::Legacy::Raw> float type.
 
@@ -211,7 +250,9 @@ Return a C<FFI::Platypus::Legacy::Raw> float type.
 
 sub float () { ord 'f' }
 
-=head2 FFI::Platypus::Legacy::Raw::double
+=head2 double
+
+ my $type = FFI::Platypus::Legacy::Raw::double();
 
 Return a C<FFI::Platypus::Legacy::Raw> double type.
 
@@ -219,7 +260,9 @@ Return a C<FFI::Platypus::Legacy::Raw> double type.
 
 sub double () { ord 'd' }
 
-=head2 FFI::Platypus::Legacy::Raw::str
+=head2 str
+
+ my $type = FFI::Platypus::Legacy::Raw::str();
 
 Return a C<FFI::Platypus::Legacy::Raw> string type.
 
@@ -227,7 +270,9 @@ Return a C<FFI::Platypus::Legacy::Raw> string type.
 
 sub str ()   { ord 's' }
 
-=head2 FFI::Platypus::Legacy::Raw::ptr
+=head2 ptr
+
+ my $type = FFI::Platypus::Legacy::Raw::ptr();
 
 Return a C<FFI::Platypus::Legacy::Raw> pointer type.
 
@@ -255,4 +300,4 @@ See http://dev.perl.org/licenses/ for more information.
 
 =cut
 
-1; # End of FFI::Platypus::Legacy::Raw
+1;
