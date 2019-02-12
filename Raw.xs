@@ -48,20 +48,6 @@ typedef struct FFI_RAW {
 	unsigned int argc;
 } FFI_Raw_t;
 
-typedef struct FFI_RAW_CALLBACK {
-	void *fn;
-	SV *coderef;
-	ffi_closure *closure;
-
-	ffi_cif cif;
-	ffi_type *ret;
-	char ret_type;
-	void *ret_value;
-	ffi_type **args;
-	char *args_types;
-	unsigned int argc;
-} FFI_Raw_Callback_t;
-
 void *_ffi_raw_get_type(char type) {
 	switch (type) {
 		case 'v': return &ffi_type_void;
@@ -143,95 +129,6 @@ void *_ffi_raw_win32_load_library(const char *posix_path) {
 #elif defined(_WIN32)
 # define _ffi_raw_win32_load_library(fn) LoadLibrary(fn)
 #endif
-
-void _ffi_raw_cb_wrap(ffi_cif *cif, void *ret, void *args[], void *argp) {
-	dSP;
-
-	int i, retc;
-	FFI_Raw_Callback_t *self = argp;
-
-	ENTER;
-	SAVETMPS;
-
-	PUSHMARK(SP);
-	for (i = 0; i < self -> argc; i++) {
-		switch (self -> args_types[i]) {
-			case 'v': break;
-			case 'l': FFI_PUSH_PARAM(long, newSViv)
-			case 'L': FFI_PUSH_PARAM(unsigned long, newSViv)
-			case 'x': FFI_PUSH_PARAM(long long int, newSVi64)
-			case 'X': FFI_PUSH_PARAM(unsigned long long int, newSVu64)
-			case 'i': FFI_PUSH_PARAM(int, newSViv)
-			case 'I': FFI_PUSH_PARAM(unsigned int, newSViv)
-			case 'c': FFI_PUSH_PARAM(char, newSViv)
-			case 'C': FFI_PUSH_PARAM(unsigned char, newSViv)
-			case 'f': FFI_PUSH_PARAM(float, newSVuv)
-			case 'd': FFI_PUSH_PARAM(double, newSVuv)
-			case 's': {
-				SV *arg = newSVpv(*(char **) args[i], 0);
-				XPUSHs(sv_2mortal(arg));
-				break;
-			}
-			case 'p': FFI_PUSH_PARAM(void *, PTR_TO_INT)
-		}
-	}
-	PUTBACK;
-
-	retc = call_sv(self -> coderef, G_SCALAR);
-
-	SPAGAIN;
-
-	switch (self -> ret_type) {
-		case 'v': break;
-		case 'l': *(long *) ret = POPi; break;
-		case 'L': *(unsigned long *) ret = POPi; break;
-		case 'x': *(long long int *) ret = POPi; break;
-		case 'X': *(unsigned long long int *) ret = POPi; break;
-		case 'i': *(int *) ret = POPi; break;
-		case 'I': *(unsigned int *) ret = POPi; break;
-		case 'z': *(short *) ret = POPi; break;
-		case 'Z': *(unsigned short *) ret = POPi; break;
-		case 'c': *(char *) ret = POPi; break;
-		case 'C': *(unsigned char *) ret = POPi; break;
-		case 'f': *(float *) ret = POPn; break;
-		case 'd': *(double *) ret = POPn; break;
-		case 's': {
-			SV *value = POPs;
-
-			if (self -> ret_value != NULL)
-				Safefree(self -> ret_value);
-
-			if (SvOK(value))
-				*(char **) ret = savepv(SvPV_nolen(value));
-			else
-				*(char **) ret = NULL;
-
-			self -> ret_value = *(void **) ret;
-
-			break;
-		}
-		case 'p': {
-			SV *value = POPs;
-
-			if (!SvOK(value)) {
-				*(void **) ret = NULL;
-				break;
-			}
-
-			if (sv_derived_from(value, "FFI::Platypus::Legacy::Raw::Ptr") ||
-			    sv_derived_from(value, "FFI::Platypus::Legacy::Raw::Callback"))
-				value = SvRV(value);
-
-			*(void **) ret = INT_TO_PTR(value);
-
-			break;
-		}
-	}
-
-	PUTBACK;
-	FREETMPS;
-	LEAVE;
-}
 
 MODULE = FFI::Platypus::Legacy::Raw				PACKAGE = FFI::Platypus::Legacy::Raw
 
