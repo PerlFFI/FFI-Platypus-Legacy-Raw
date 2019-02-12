@@ -1,28 +1,6 @@
 MODULE = FFI::Platypus::Legacy::Raw				PACKAGE = FFI::Platypus::Legacy::Raw::MemPtr
 
 FFI_Raw_MemPtr_t *
-new(class, length)
-	SV *class
-	unsigned int length
-
-	CODE:
-		Newx(RETVAL, length, char);
-
-	OUTPUT: RETVAL
-
-FFI_Raw_MemPtr_t *
-new_from_buf(class, buffer, length)
-	SV *class
-	SV *buffer
-	unsigned int length
-
-	CODE:
-		Newx(RETVAL, length, char);
-		Copy(SvPVX(buffer), RETVAL, length, char);
-
-	OUTPUT: RETVAL
-
-FFI_Raw_MemPtr_t *
 new_from_ptr(class, pointer)
 	SV *class
 	SV *pointer
@@ -63,13 +41,3 @@ to_perl_str(self, ...)
 
 	OUTPUT: RETVAL
 
-void
-DESTROY(self)
-	FFI_Raw_MemPtr_t *self
-
-	PREINIT:
-		void *ptr;
-
-	CODE:
-		ptr = self;
-		Safefree(ptr);

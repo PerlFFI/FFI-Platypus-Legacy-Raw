@@ -2,6 +2,9 @@ package FFI::Platypus::Legacy::Raw;
 
 use strict;
 use warnings;
+use FFI::Platypus::Legacy::Raw::Callback;
+use FFI::Platypus::Legacy::Raw::Ptr;
+use FFI::Platypus::Legacy::Raw::MemPtr;
 
 require XSLoader;
 XSLoader::load('FFI::Platypus::Legacy::Raw', $FFI::Platypus::Legacy::Raw::VERSION);

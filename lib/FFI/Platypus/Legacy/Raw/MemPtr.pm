@@ -2,6 +2,9 @@ package FFI::Platypus::Legacy::Raw::MemPtr;
 
 use strict;
 use warnings;
+use Carp qw( croak );
+use FFI::Platypus::Memory qw( malloc free memcpy );
+use FFI::Platypus::Buffer qw( scalar_to_buffer );
 
 our @ISA = qw( FFI::Platypus::Legacy::Raw::Ptr );
 
@@ -17,13 +20,32 @@ functions taking a C<FFI::Platypus::Legacy::Raw::ptr> argument.
 The allocated memory is automatically deallocated once the object is not in use
 anymore.
 
-=head1 METHODS
+=head1 CONSTRUCTORS
 
-=head2 new( $length )
+=head2 new
+
+ FFI::Platypus::Legacy::Raw::MemPtr->new( $length );
 
 Allocate a new C<FFI::Platypus::Legacy::Raw::MemPtr> of size C<$length> bytes.
 
-=head2 new_from_buf( $buffer, $length )
+=cut
+
+sub new
+{
+  my($class, $size) = @_;
+  my $ptr = malloc $size;
+  bless \$ptr, $class;
+}
+
+sub DESTROY
+{
+  my($self) = @_;
+  free $$self;
+}
+
+=head2 new_from_buf
+
+ my $memptr = FFI::Platypus::Legacy::Raw::MemPtr->new_from_buf( $buffer, $length );
 
 Allocate a new C<FFI::Platypus::Legacy::Raw::MemPtr> of size C<$length> bytes and copy C<$buffer>
 into it. This can be used, for example, to pass a pointer to a function that
@@ -58,17 +80,69 @@ It can be called using FFI::Platypus::Legacy::Raw as follows:
 
 Which would print C<hello>.
 
-=head2 new_from_ptr( $ptr )
+=cut
+
+sub new_from_buf
+{
+  my($class, undef, $size) = @_;
+  my $dst = malloc $size;
+  my($src, undef) = scalar_to_buffer $_[1];
+  memcpy $dst, $src, $size;
+  bless \$dst, $class;
+}
+
+=head2 new_from_ptr
+
+ my $memptr = FFI::Platypus::Legacy::Raw::MemPtr->new_from_ptr( $ptr );
 
 Allocate a new C<FFI::Platypus::Legacy::Raw::MemPtr> pointing to the C<$ptr>, which can be either
 a C<FFI::Platypus::Legacy::Raw::MemPtr> or a pointer returned by another function.
 
 This is the C<FFI::Platypus::Legacy::Raw> equivalent of a pointer to a pointer.
 
-=head2 to_perl_str( [$length] )
+=cut
+
+#sub new_from_ptr
+#{
+#  my($class, $ptr) = @_;
+#  if(ref $ptr)
+#  {
+#    if(eval { $ptr->isa('FFI::Platypus::Legacy::Raw::Ptr') })
+#    {
+#      $ptr = $$ptr;
+#    }
+#  }
+#}
+
+=head1 METHODS
+
+=head2 to_perl_str
+
+ my $memptr = FFI::Platypus::Legacy::Raw::MemPtr->to_perl_str;
+ my $memptr = FFI::Platypus::Legacy::Raw::MemPtr->to_perl_str( $length );
 
 Convert a C<FFI::Platypus::Legacy::Raw::MemPtr> to a Perl string. If C<$length> is not provided,
 the length of the string will be computed using C<strlen()>.
+
+=cut
+
+## NOTE: prototype for a method is kind of dumb but we are including it for
+## compatability with FFI::Raw
+#sub to_perl_str ($;$)
+#{
+#  my($self, $size) = @_;
+#  if(@_ == 1)
+#  {
+#    
+#  }
+#  elsif(@_ == 2)
+#  {
+#  }
+#  else
+#  {
+#    croak "Wrong number of arguments";
+#  }
+#}
 
 =for Pod::Coverage tostr
 
