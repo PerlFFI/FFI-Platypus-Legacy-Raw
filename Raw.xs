@@ -48,8 +48,6 @@ typedef struct FFI_RAW {
 	unsigned int argc;
 } FFI_Raw_t;
 
-typedef void FFI_Raw_MemPtr_t;
-
 typedef struct FFI_RAW_CALLBACK {
 	void *fn;
 	SV *coderef;
@@ -563,5 +561,4 @@ DESTROY(self)
 		Safefree(self -> args);
 		Safefree(self);
 
-INCLUDE: xs/MemPtr.xs
 INCLUDE: xs/Callback.xs

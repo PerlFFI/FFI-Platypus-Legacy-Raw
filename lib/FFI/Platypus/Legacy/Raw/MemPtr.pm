@@ -108,17 +108,21 @@ This is the C<FFI::Platypus::Legacy::Raw> equivalent of a pointer to a pointer.
 
 =cut
 
-#sub new_from_ptr
-#{
-#  my($class, $ptr) = @_;
-#  if(ref $ptr)
-#  {
-#    if(eval { $ptr->isa('FFI::Platypus::Legacy::Raw::Ptr') })
-#    {
-#      $ptr = $$ptr;
-#    }
-#  }
-#}
+sub new_from_ptr
+{
+  my($class, $src) = @_;
+  if(ref $src)
+  {
+    if(eval { $src->isa('FFI::Platypus::Legacy::Raw::Ptr') })
+    {
+      $src = $$src;
+    }
+  }
+  my $dst = _ffi
+    ->function('ffi__platypus__legacy__raw__memptr__new_from_ptr' => ['opaque'] => 'opaque')
+    ->call($src);
+  bless \$dst, $class;
+}
 
 =head1 METHODS
 

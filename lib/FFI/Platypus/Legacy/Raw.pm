@@ -20,6 +20,8 @@ sub _bool {
 }
 
 my $ffi = FFI::Platypus->new;
+$ffi->lib(undef);
+$ffi->package;
 sub _ffi { $ffi }
 
 =head1 NAME
