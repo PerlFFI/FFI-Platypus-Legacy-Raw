@@ -22,41 +22,6 @@ subtest 'argless' => sub {
 };
 
 subtest 'simple-args' => sub {
-  use bigint;
-
-  my $min_int64  = -2**63;
-  my $max_uint64 = 2**64-1;
-
-  SKIP: {
-    eval "use Math::Int64";
-
-    if ($@) {
-      note "Math::Int64 required for int64 tests\n";
-      last SKIP;
-    }
-
-    my $take_one_int64 = eval { FFI::Platypus::Legacy::Raw->new(
-      $shared, 'take_one_int64',
-      FFI::Platypus::Legacy::Raw::void, FFI::Platypus::Legacy::Raw::int64
-    ) };
-
-    if ($@) {
-      note "LLONG_MIN and ULLONG_MAX required for int64 tests\n";
-      last SKIP;
-    }
-
-    $take_one_int64->call($min_int64);
-
-    my $take_one_uint64 = FFI::Platypus::Legacy::Raw->new(
-      $shared, 'take_one_uint64',
-      FFI::Platypus::Legacy::Raw::void, FFI::Platypus::Legacy::Raw::uint64
-    );
-
-    $take_one_uint64->call($max_uint64);
-  }
-
-  no bigint;
-
   my $take_one_long = FFI::Platypus::Legacy::Raw->new(
     $shared, 'take_one_long',
     FFI::Platypus::Legacy::Raw::void, FFI::Platypus::Legacy::Raw::long

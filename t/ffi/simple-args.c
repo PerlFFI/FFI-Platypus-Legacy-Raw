@@ -89,24 +89,32 @@ extern void
 take_one_double(double x)
 {
   char message[1024];
-  ok(-6.9 - x < 0.001, "got double");
+  ok(fabs(-6.9 - x) < 0.001, "got double");
   sprintf(message, "actual double = %lf", x);
-  if(-6.9 - x < 0.001)
+  if(fabs(-6.9 - x) < 0.001)
     note(message);
   else
+  {
     diag(message);
+    sprintf(message, "off by %lf", fabs(-6.9 - x));
+    diag(message);
+  }
 }
 
 extern void
 take_one_float(float x)
 {
   char message[1024];
-  ok(4.2 - x < 0.001, "got float");
+  ok(fabsf(4.2 - x) < 0.001, "got float");
   sprintf(message, "actual float = %f", x);
-  if(4.2 - x < 0.001)
+  if(fabsf(4.2 - x) < 0.001)
     note(message);
   else
+  {
     diag(message);
+    sprintf(message, "off by %f", fabsf(4.2-x));
+    diag(message);
+  }
 }
 
 extern void
