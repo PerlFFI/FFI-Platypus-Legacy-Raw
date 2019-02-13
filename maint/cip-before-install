@@ -4,3 +4,5 @@ set -ex
 
 cip sudo apt-get update
 cip sudo apt-get -y install libffi-dev
+
+cip exec cpanm -n https://dist.wdlabs.com/Test2-Tools-FFI-0.02.tar.gz

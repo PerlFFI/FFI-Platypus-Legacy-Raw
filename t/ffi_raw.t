@@ -3,6 +3,10 @@ use Test2::Tools::FFI;
 use FFI::Platypus::Legacy::Raw;
 use Math::BigInt;
 use POSIX;
+use File::Spec;
+use Env qw(@PATH);
+use File::Copy qw(cp);
+use File::Temp qw(tempdir);
 
 my($shared) = lib->test;
 
@@ -238,7 +242,6 @@ subtest 'overload' => sub {
 
 };
 
-
 subtest 'from mail' => sub {
 
   my $isalpha = FFI::Platypus::Legacy::Raw->new(undef, 'isalpha', FFI::Platypus::Legacy::Raw::int, FFI::Platypus::Legacy::Raw::int);
@@ -248,6 +251,29 @@ subtest 'from mail' => sub {
   ok  $isalpha->call(ord 'a');
   ok !$isalpha->call(ord '0');
 
+};
+
+subtest 'absolute-path' => sub {
+
+  my $absolute = File::Spec->rel2abs($shared);
+  note "shared   = $shared";
+  note "absolute = $absolute";
+
+  my $one = FFI::Platypus::Legacy::Raw->new($absolute, 'one', FFI::Platypus::Legacy::Raw::int);
+  is $one->(), 1, "absolute $absolute";
+
+  SKIP: {
+    skip 'Cygwin/MSWin32 only'
+      unless $^O =~ /^(cygwin|MSWin32)$/;
+
+    my $tmp = tempdir(CLEANUP => 1);
+    cp($absolute, File::Spec->catfile($tmp, 'foo.dll'));
+
+    push @PATH, $tmp;
+    my $one = FFI::Platypus::Legacy::Raw->new('foo.dll', 'one', FFI::Platypus::Legacy::Raw::int);
+
+    is $one->(), 1, "path $tmp/foo.dll";
+  }
 };
 
 done_testing;
