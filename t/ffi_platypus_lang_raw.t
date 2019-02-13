@@ -3,7 +3,7 @@ use FFI::Platypus::Lang::Raw;
 use FFI::Platypus::Legacy::Raw;
 use Data::Dumper;
 
-my @type_names = qw( void int uint short ushort long ulong int64 uint64 char uchar float double str ptr );
+my @type_names = qw( void int uint short ushort long ulong int64 uint64 char uchar float double str );
 
 foreach my $type_name (@type_names)
 {

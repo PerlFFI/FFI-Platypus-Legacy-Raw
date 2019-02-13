@@ -39,8 +39,6 @@ sub native_type_map
     %types = (
       %{ $class->SUPER::native_type_map },
       'v' => 'void',
-      'l' => 'long',
-      'L' => 'unsigned long',
       'x' => 'sint64',
       'X' => 'uint64',
       'i' => 'sint32',
@@ -52,9 +50,10 @@ sub native_type_map
       'f' => 'float',
       'd' => 'double',
       's' => 'string',
-      'p' => 'opaque',
     );
   }
+  $types{l} = $types{'long'};
+  $types{L} = $types{'unsigned long'};
   \%types;
 }
 

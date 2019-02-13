@@ -10,13 +10,11 @@ my %modules;
 my $post_diag;
 
 $modules{$_} = $_ for qw(
-  Alien::Base::Wrapper
-  Alien::FFI
   ExtUtils::MakeMaker
   FFI::Build
   FFI::Build::MM
   FFI::Platypus
-  Math::Int64
+  Ref::Util
   Test2::Tools::FFI
   Test2::V0
 );

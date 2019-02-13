@@ -3,19 +3,16 @@ package FFI::Platypus::Legacy::Raw;
 use strict;
 use warnings;
 use FFI::Platypus;
+use FFI::Platypus::Legacy::Raw::Platypus;
 use FFI::Platypus::Legacy::Raw::Callback;
 use FFI::Platypus::Legacy::Raw::Ptr;
 use FFI::Platypus::Legacy::Raw::MemPtr;
-
-# ABSTRACT: Perl bindings to the portable FFI library (libffi)
-# VERSION
-
-require XSLoader;
-XSLoader::load('FFI::Platypus::Legacy::Raw', $FFI::Platypus::Legacy::Raw::VERSION);
-
 use overload
   '&{}'  => \&coderef,
   'bool' => \&_bool;
+
+# ABSTRACT: Perl bindings to the portable FFI library (libffi)
+# VERSION
 
 sub _bool {
   my $ffi = shift;
@@ -72,10 +69,21 @@ of the wanted function.
 
 =cut
 
+sub _new
+{
+  my($class, $ffi, $id, $ret_type, @types) = @_;
+  my $f = $ffi->function($id => \@types => $ret_type);
+  bless [$f], $class;
+}
+
 sub new
 {
-  my(undef, $library, $function, @types) = @_;
-  _new($library, $function, map { ord $_ } @types);
+  my($class, $library, $function, @types) = @_;
+  $class->_new(
+    defined $library ? _ffi $library : _ffi_libc,
+    $function,
+    @types
+  );
 }
 
 =head2 new_from_ptr
@@ -91,8 +99,13 @@ of the wanted function.
 
 sub new_from_ptr
 {
-  my(undef, $ptr, @types) = @_;
-  _new_from_ptr($ptr, map { ord $_ } @types);
+  my($class, $ptr, @types) = @_;
+  $class->_new(
+    _ffi_package,
+    $ptr,
+    @types,
+  );
+  
 }
 
 =head1 METHODS
@@ -113,6 +126,14 @@ the object will work just like call():
 
 This works because FFI::Platypus::Legacy::Raw overloads the C<&{}> operator.
 
+=cut
+
+sub call
+{
+  my $self = shift;
+  $self->[0]->call(@_);
+}
+
 =head2 coderef
 
  my $code = FFI::Platypus::Legacy::Raw->coderef;
@@ -121,9 +142,10 @@ Return a code reference of a given C<FFI::Platypus::Legacy::Raw>.
 
 =cut
 
-sub coderef {
-  my $ffi = shift;
-  return sub { $ffi->call(@_) };
+sub coderef
+{
+  my $self = shift;
+  return sub { $self->call(@_) };
 }
 
 =head1 SUBROUTINES
