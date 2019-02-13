@@ -213,7 +213,7 @@ subtest 'simple-returns' => sub {
   my $return_double = FFI::Platypus::Legacy::Raw->new($shared, 'return_double', FFI::Platypus::Legacy::Raw::double);
 
   {
-    my $todo = 'failing';
+    my $todo = todo 'failing';
     is $return_double->call, 9.9e0;
     is $return_double->(), 9.9e0;
   };
