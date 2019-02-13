@@ -26,6 +26,7 @@ pod_spelling_system:
     - bakkiaraj
     - dsteinbrunner
     - ghedo
+    - xsub
 
 pod_coverage:
   skip: 0

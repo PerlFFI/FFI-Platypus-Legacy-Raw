@@ -111,7 +111,7 @@ want a specific sized type.
 
 This module also assumes that `char` is signed.  Although this is commonly true
 on many platforms it is not guaranteed by the standard.  On Windows, for example the
-`char` type is unsigned.  [FFI::Platypus](https://metacpan.org/pod/FFI::Platypus) by contrast adhers to the standard
+`char` type is unsigned.  [FFI::Platypus](https://metacpan.org/pod/FFI::Platypus) by contrast follows to the standard
 where `char` uses the native behavior, and if you want an signed character type
 you can use `sint8` instead.
 
@@ -205,6 +205,25 @@ Return a `FFI::Platypus::Legacy::Raw` string type.
     my $type = FFI::Platypus::Legacy::Raw::ptr();
 
 Return a `FFI::Platypus::Legacy::Raw` pointer type.
+
+# EXTENSIONS
+
+Documented in this section are features that are available
+when using [FFI::Platypus::Legacy::Raw](https://metacpan.org/pod/FFI::Platypus::Legacy::Raw), but are NOT
+provided by [FFI::Raw](https://metacpan.org/pod/FFI::Raw).  Only use them if you do not intend
+on switching back to [FFI::Raw](https://metacpan.org/pod/FFI::Raw).
+
+## attach
+
+    $ffi->attach;  # allowed for functions specified by name
+                   # but not by address/pointer
+    $ffi->attach($name);
+    $ffi->attach($name, $prototype);
+
+Attach the function as an xsub.  This is probably the most
+important feature that [FFI::Platypus](https://metacpan.org/pod/FFI::Platypus) provides that [FFI::Raw](https://metacpan.org/pod/FFI::Raw)
+does not.  calling an attached xsub is much faster than 
+calling an unattached function.
 
 # SEE ALSO
 

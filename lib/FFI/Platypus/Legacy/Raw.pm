@@ -79,11 +79,13 @@ sub _new
 sub new
 {
   my($class, $library, $function, @types) = @_;
-  $class->_new(
+  my $self = $class->_new(
     defined $library ? _ffi $library : _ffi_libc,
     $function,
     @types
   );
+  $self->[1] = $function;
+  $self;
 }
 
 =head2 new_from_ptr
@@ -184,7 +186,7 @@ want a specific sized type.
 
 This module also assumes that C<char> is signed.  Although this is commonly true
 on many platforms it is not guaranteed by the standard.  On Windows, for example the
-C<char> type is unsigned.  L<FFI::Platypus> by contrast adhers to the standard
+C<char> type is unsigned.  L<FFI::Platypus> by contrast follows to the standard
 where C<char> uses the native behavior, and if you want an signed character type
 you can use C<sint8> instead.
 
@@ -338,6 +340,52 @@ Return a C<FFI::Platypus::Legacy::Raw> pointer type.
 =cut
 
 sub ptr ()   { 'p' }
+
+=head1 EXTENSIONS
+
+Documented in this section are features that are available
+when using L<FFI::Platypus::Legacy::Raw>, but are NOT
+provided by L<FFI::Raw>.  Only use them if you do not intend
+on switching back to L<FFI::Raw>.
+
+=head2 attach
+
+ $ffi->attach;  # allowed for functions specified by name
+                # but not by address/pointer
+ $ffi->attach($name);
+ $ffi->attach($name, $prototype);
+
+Attach the function as an xsub.  This is probably the most
+important feature that L<FFI::Platypus> provides that L<FFI::Raw>
+does not.  calling an attached xsub is much faster than 
+calling an unattached function.
+
+=cut
+
+sub attach
+{
+  my($self, $perl_name, $proto) = @_;
+
+  unless(defined $perl_name)
+  {
+    $perl_name = $self->[1];
+    unless(defined $perl_name)
+    {
+      require Carp;
+      Carp::croak("Cannot determine function name from a pointer");
+    }
+  }
+
+  # some of this logic is unfortunately replicated
+  # in FFI-Platypus :/
+  if($perl_name !~ /::/)
+  {
+    my $caller = caller;
+    $perl_name = join '::', $caller, $perl_name;
+  }
+  
+  $self->[0]->attach($perl_name, $proto);
+}
 
 =head1 SEE ALSO
 
