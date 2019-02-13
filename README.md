@@ -1,4 +1,4 @@
-# FFI::Platypus::Legacy::Raw [![Build Status](https://secure.travis-ci.org/plicease/work.png)](http://travis-ci.org/plicease/work)
+# FFI::Platypus::Legacy::Raw [![Build Status](https://secure.travis-ci.org/plicease/FFI-Platypus-Legacy-Raw.png)](http://travis-ci.org/plicease/FFI-Platypus-Legacy-Raw)
 
 Perl bindings to the portable FFI library (libffi)
 
@@ -98,6 +98,22 @@ Create a [FFI::Platypus::Legacy::Raw::MemPtr](https://metacpan.org/pod/FFI::Plat
 Create a [FFI::Platypus::Legacy::Raw::Callback](https://metacpan.org/pod/FFI::Platypus::Legacy::Raw::Callback). This is a shortcut for `FFI::Platypus::Legacy::Raw::Callback->new(...)`.
 
 # TYPES
+
+Caveats on the way types were defined by the original [FFI::Raw](https://metacpan.org/pod/FFI::Raw):
+
+This module uses the common convention that `char` is 8 bits, `short` is 16 bits,
+`int` is 32 bits, `long` is 32 bits on a 32bit arch and 64 bits on a 64 bit arch,
+`int64` is 64 bits.  While this is probably true on most modern platforms
+(if not all), it isn't technically guaranteed by the standard.  [FFI::Platypus](https://metacpan.org/pod/FFI::Platypus)
+itself, differs in that `int`, `long`, etc are the native sizes, even if they do not
+follow this common convention and you need to use `sint32`, `sint64`, etc if you
+want a specific sized type.
+
+This module also assumes that `char` is signed.  Although this is commonly true
+on many platforms it is not guaranteed by the standard.  On Windows, for example the
+`char` type is unsigned.  [FFI::Platypus](https://metacpan.org/pod/FFI::Platypus) by contrast adhers to the standard
+where `char` uses the native behavior, and if you want an signed character type
+you can use `sint8` instead.
 
 ## void
 

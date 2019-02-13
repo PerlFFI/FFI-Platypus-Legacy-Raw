@@ -172,6 +172,22 @@ sub callback { FFI::Platypus::Legacy::Raw::Callback->new(@_) }
 
 =head1 TYPES
 
+Caveats on the way types were defined by the original L<FFI::Raw>:
+
+This module uses the common convention that C<char> is 8 bits, C<short> is 16 bits,
+C<int> is 32 bits, C<long> is 32 bits on a 32bit arch and 64 bits on a 64 bit arch,
+C<int64> is 64 bits.  While this is probably true on most modern platforms
+(if not all), it isn't technically guaranteed by the standard.  L<FFI::Platypus>
+itself, differs in that C<int>, C<long>, etc are the native sizes, even if they do not
+follow this common convention and you need to use C<sint32>, C<sint64>, etc if you
+want a specific sized type.
+
+This module also assumes that C<char> is signed.  Although this is commonly true
+on many platforms it is not guaranteed by the standard.  On Windows, for example the
+C<char> type is unsigned.  L<FFI::Platypus> by contrast adhers to the standard
+where C<char> uses the native behavior, and if you want an signed character type
+you can use C<sint8> instead.
+
 =head2 void
 
  my $type = FFI::Platypus::Legacy::Raw::void();
