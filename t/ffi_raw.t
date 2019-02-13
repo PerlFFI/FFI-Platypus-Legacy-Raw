@@ -276,4 +276,34 @@ subtest 'absolute-path' => sub {
   }
 };
 
+subtest 'null' => sub {
+
+  my $return_undef_str  = FFI::Platypus::Legacy::Raw->new(
+    $shared, 'return_undef_str', FFI::Platypus::Legacy::Raw::str
+  );
+
+  my $pass_in_undef_str = FFI::Platypus::Legacy::Raw->new(
+    $shared, 'pass_in_undef_str', FFI::Platypus::Legacy::Raw::void, FFI::Platypus::Legacy::Raw::str
+  );
+
+  $pass_in_undef_str->call(undef);
+
+  my $undef_str = $return_undef_str->call;
+  is($undef_str, U(), "returned undef");
+
+  my $return_undef_ptr  = FFI::Platypus::Legacy::Raw->new(
+    $shared, 'return_undef_ptr', FFI::Platypus::Legacy::Raw::ptr
+  );
+
+  my $pass_in_undef_ptr = FFI::Platypus::Legacy::Raw->new(
+    $shared, 'pass_in_undef_ptr', FFI::Platypus::Legacy::Raw::void, FFI::Platypus::Legacy::Raw::ptr
+  );
+
+  $pass_in_undef_ptr->call(undef);
+
+  my $undef_ptr = $return_undef_ptr->call;
+  is($undef_ptr, U(), "returned undef");
+
+};
+
 done_testing;
