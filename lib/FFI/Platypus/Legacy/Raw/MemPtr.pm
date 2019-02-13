@@ -6,16 +6,12 @@ use Carp qw( croak );
 use FFI::Platypus::Legacy::Raw;
 use FFI::Platypus::Memory qw( malloc free memcpy );
 use FFI::Platypus::Buffer qw( scalar_to_buffer buffer_to_scalar );
+use FFI::Platypus::Legacy::Raw::Platypus;
 
 # ABSTRACT: FFI::Platypus::Legacy::Raw memory pointer type
 # VERSION
 
 our @ISA = qw( FFI::Platypus::Legacy::Raw::Ptr );
-
-sub _ffi
-{
-  FFI::Platypus::Legacy::Raw::_ffi();
-}
 
 =head1 DESCRIPTION
 
@@ -126,7 +122,7 @@ sub new_from_ptr
       $src = $$src;
     }
   }
-  my $dst = _ffi
+  my $dst = _ffi_package
     ->function('ffi__platypus__legacy__raw__memptr__new_from_ptr' => ['opaque'] => 'opaque')
     ->call($src);
   bless \$dst, $class;
@@ -151,7 +147,7 @@ sub to_perl_str ($;$)
   my($self, $size) = @_;
   if(@_ == 1)
   {
-    return _ffi->cast('opaque' => 'string', $$self);
+    return _ffi_package->cast('opaque' => 'string', $$self);
   }
   elsif(@_ == 2)
   {

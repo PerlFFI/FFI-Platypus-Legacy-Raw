@@ -33,3 +33,4 @@ pod_coverage:
   # for either Class or method.
   private:
     - FFI::Platypus::Legacy::Raw::MemPtr#tostr
+    - FFI::Platypus::Legacy::Raw::Platypus

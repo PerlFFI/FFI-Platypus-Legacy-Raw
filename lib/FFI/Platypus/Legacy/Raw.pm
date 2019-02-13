@@ -22,12 +22,6 @@ sub _bool {
   return $ffi;
 }
 
-my $ffi = FFI::Platypus->new;
-$ffi->lib(undef);
-$ffi->lang('Raw');
-$ffi->package;
-sub _ffi { $ffi }
-
 =head1 SYNOPSIS
 
  use FFI::Platypus::Legacy::Raw;

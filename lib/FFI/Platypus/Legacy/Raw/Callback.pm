@@ -3,14 +3,10 @@ package FFI::Platypus::Legacy::Raw::Callback;
 use strict;
 use warnings;
 use FFI::Platypus::Memory qw( strdup free );
+use FFI::Platypus::Legacy::Raw::Platypus;
 
 # ABSTRACT: FFI::Platypus::Legacy::Raw function pointer type
 # VERSION
-
-sub _ffi
-{
-  FFI::Platypus::Legacy::Raw::_ffi();
-}
 
 =head1 DESCRIPTION
 
@@ -74,13 +70,13 @@ sub new
     };
   }
 
-  my $closure = _ffi->closure($coderef);
+  my $closure = _ffi_package->closure($coderef);
   my $closure_type = '(' . join(',', @arg_types) . ")->$ret_type";
 
   $self = bless {
     coderef => $coderef,
     closure => $closure,
-    ptr     => _ffi->cast($closure_type => 'opaque', $closure),
+    ptr     => _ffi_package->cast($closure_type => 'opaque', $closure),
   }, $class;
 }
 
