@@ -111,6 +111,14 @@ This is the C<FFI::Platypus::Legacy::Raw> equivalent of a pointer to a pointer.
 
 =cut
 
+_ffi_package
+  ->attach(
+    ['ffi__platypus__legacy__raw__memptr__new_from_ptr' => 
+     '_new_from_ptr'] 
+    => ['opaque'] => 'opaque'
+  )
+;
+
 sub new_from_ptr
 {
   my($class, $src) = @_;
@@ -121,9 +129,7 @@ sub new_from_ptr
       $src = $$src;
     }
   }
-  my $dst = _ffi_package
-    ->function('ffi__platypus__legacy__raw__memptr__new_from_ptr' => ['opaque'] => 'opaque')
-    ->call($src);
+  my $dst = _new_from_ptr($src);
   bless \$dst, $class;
 }
 
@@ -139,6 +145,8 @@ the length of the string will be computed using C<strlen()>.
 
 =cut
 
+_ffi_package->attach_cast('_opaque_to_string', 'opaque' => 'string');
+
 ## NOTE: prototype for a method is kind of dumb but we are including it for
 ## full compatability with FFI::Raw
 sub to_perl_str ($;$)
@@ -146,7 +154,7 @@ sub to_perl_str ($;$)
   my($self, $size) = @_;
   if(@_ == 1)
   {
-    return _ffi_package->cast('opaque' => 'string', $$self);
+    return _opaque_to_string($$self);
   }
   elsif(@_ == 2)
   {
