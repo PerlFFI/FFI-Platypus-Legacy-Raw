@@ -23,6 +23,14 @@ subtest 'basic' => sub {
   is $got, '', "A length of 0 to_perl_str() is handled correctly, returning an empty string";
 };
 
+subtest 'new' => sub {
+
+  my $bar = FFI::Platypus::Legacy::Raw::MemPtr->new(20);
+  isa_ok $bar, 'FFI::Platypus::Legacy::Raw::MemPtr';
+  isa_ok $bar, 'FFI::Platypus::Legacy::Raw::Ptr';
+
+};
+
 subtest 'pointers' => sub {
   my $get_test_ptr_size = FFI::Platypus::Legacy::Raw->new(
     $shared, 'get_test_ptr_size', FFI::Platypus::Legacy::Raw::int
