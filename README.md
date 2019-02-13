@@ -1,4 +1,4 @@
-# FFI::Platypus::Legacy::Raw [![Build Status](https://secure.travis-ci.org/plicease/FFI-Platypus-Legacy-Raw.png)](http://travis-ci.org/plicease/FFI-Platypus-Legacy-Raw)
+# FFI::Platypus::Legacy::Raw [![Build Status](https://secure.travis-ci.org/plicease/work.png)](http://travis-ci.org/plicease/work)
 
 Perl bindings to the portable FFI library (libffi)
 

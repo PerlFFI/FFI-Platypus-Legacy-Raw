@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <inttypes.h>
+#include <stdio.h>
 #include <t2t/simple.h>
 
 extern void
@@ -87,13 +88,25 @@ take_misc_ints(int x, short y, char z)
 extern void
 take_one_double(double x)
 {
+  char message[1024];
   ok(-6.9 - x < 0.001, "got double");
+  sprintf(message, "actual double = %lf", x);
+  if(-6.9 - x < 0.001)
+    note(message);
+  else
+    diag(message);
 }
 
 extern void
 take_one_float(float x)
 {
+  char message[1024];
   ok(4.2 - x < 0.001, "got float");
+  sprintf(message, "actual float = %f", x);
+  if(4.2 - x < 0.001)
+    note(message);
+  else
+    diag(message);
 }
 
 extern void
