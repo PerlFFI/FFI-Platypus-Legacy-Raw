@@ -74,8 +74,8 @@ For example, consider the following C code
  };
  
  extern void take_one_struct(struct some_struct *arg) {
-   if (arg -> some_int == 42)
-     puts(arg -> some_str);
+   if (arg->some_int == 42)
+     puts(arg->some_str);
  }
 
 It can be called using FFI::Platypus::Legacy::Raw as follows:
@@ -83,14 +83,14 @@ It can be called using FFI::Platypus::Legacy::Raw as follows:
  use FFI::Platypus::Legacy::Raw;
  
  my $packed = pack('ix![p]p', 42, 'hello');
- my $arg = FFI::Platypus::Legacy::Raw::MemPtr -> new_from_buf($packed, length $packed);
+ my $arg = FFI::Platypus::Legacy::Raw::MemPtr->new_from_buf($packed, length $packed);
  
- my $take_one_struct = FFI::Platypus::Legacy::Raw -> new(
+ my $take_one_struct = FFI::Platypus::Legacy::Raw->new(
    $shared, 'take_one_struct',
    FFI::Platypus::Legacy::Raw::void, FFI::Platypus::Legacy::Raw::ptr
  );
  
- $take_one_struct -> ($arg);
+ $take_one_struct->($arg);
 
 Which would print C<hello>.
 
@@ -169,7 +169,7 @@ sub to_perl_str ($;$)
 
 sub tostr {
   my $self = shift;
-  return $self -> to_perl_str(@_)
+  return $self->to_perl_str(@_)
 }
 
 1;

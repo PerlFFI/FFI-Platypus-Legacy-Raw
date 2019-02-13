@@ -6,13 +6,13 @@ Perl bindings to the portable FFI library (libffi)
 
     use FFI::Platypus::Legacy::Raw;
     
-    my $cos = FFI::Platypus::Legacy::Raw -> new(
+    my $cos = FFI::Platypus::Legacy::Raw->new(
       'libm.so', 'cos',
       FFI::Platypus::Legacy::Raw::double, # return value
       FFI::Platypus::Legacy::Raw::double  # arg #1
     );
     
-    say $cos -> call(2.0);
+    say $cos->call(2.0);
 
 # DESCRIPTION
 
@@ -72,8 +72,8 @@ match the types passed to `new` (or `new_from_ptr`).
 The `FFI::Platypus::Legacy::Raw` object can be used as a CODE reference as well. Dereferencing
 the object will work just like call():
 
-    $cos -> call(2.0); # normal call() call
-    $cos -> (2.0);     # dereference as CODE ref
+    $cos->call(2.0); # normal call() call
+    $cos->(2.0);     # dereference as CODE ref
 
 This works because FFI::Platypus::Legacy::Raw overloads the `&{}` operator.
 

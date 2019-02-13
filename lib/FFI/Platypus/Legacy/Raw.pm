@@ -44,13 +44,13 @@ sub _ffi { $ffi }
 
  use FFI::Platypus::Legacy::Raw;
  
- my $cos = FFI::Platypus::Legacy::Raw -> new(
+ my $cos = FFI::Platypus::Legacy::Raw->new(
    'libm.so', 'cos',
    FFI::Platypus::Legacy::Raw::double, # return value
    FFI::Platypus::Legacy::Raw::double  # arg #1
  );
  
- say $cos -> call(2.0);
+ say $cos->call(2.0);
 
 =head1 DESCRIPTION
 
@@ -126,8 +126,8 @@ match the types passed to C<new> (or C<new_from_ptr>).
 The C<FFI::Platypus::Legacy::Raw> object can be used as a CODE reference as well. Dereferencing
 the object will work just like call():
 
- $cos -> call(2.0); # normal call() call
- $cos -> (2.0);     # dereference as CODE ref
+ $cos->call(2.0); # normal call() call
+ $cos->(2.0);     # dereference as CODE ref
 
 This works because FFI::Platypus::Legacy::Raw overloads the C<&{}> operator.
 
@@ -141,7 +141,7 @@ Return a code reference of a given C<FFI::Platypus::Legacy::Raw>.
 
 sub coderef {
   my $ffi = shift;
-  return sub { $ffi -> call(@_) };
+  return sub { $ffi->call(@_) };
 }
 
 =head1 SUBROUTINES
@@ -154,7 +154,7 @@ Create a L<FFI::Platypus::Legacy::Raw::MemPtr>. This is a shortcut for C<FFI::Pl
 
 =cut
 
-sub memptr { FFI::Platypus::Legacy::Raw::MemPtr -> new(@_) }
+sub memptr { FFI::Platypus::Legacy::Raw::MemPtr->new(@_) }
 
 =head2 callback
 
@@ -164,7 +164,7 @@ Create a L<FFI::Platypus::Legacy::Raw::Callback>. This is a shortcut for C<FFI::
 
 =cut
 
-sub callback { FFI::Platypus::Legacy::Raw::Callback -> new(@_) }
+sub callback { FFI::Platypus::Legacy::Raw::Callback->new(@_) }
 
 =head1 TYPES
 

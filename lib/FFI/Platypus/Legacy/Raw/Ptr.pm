@@ -14,41 +14,41 @@ use warnings;
  
  use base qw(FFI::Platypus::Legacy::Raw::Ptr);
  
- *_foo_new = FFI::Platypus::Legacy::Raw -> new(
+ *_foo_new = FFI::Platypus::Legacy::Raw->new(
    $shared, 'foo_new',
    FFI::Platypus::Legacy::Raw::ptr
- ) -> coderef;
+ )->coderef;
  
  sub new {
-   bless shift -> SUPER::new(_foo_new());
+   bless shift->SUPER::new(_foo_new());
  }
 
- *get_bar = FFI::Platypus::Legacy::Raw -> new(
+ *get_bar = FFI::Platypus::Legacy::Raw->new(
    $shared, 'foo_get_bar',
    FFI::Platypus::Legacy::Raw::int,
    FFI::Platypus::Legacy::Raw::ptr
- ) -> coderef;
+ )->coderef;
  
- *set_bar = FFI::Platypus::Legacy::Raw -> new(
+ *set_bar = FFI::Platypus::Legacy::Raw->new(
    $shared, 'foo_set_bar',
    FFI::Platypus::Legacy::Raw::void,
    FFI::Platypus::Legacy::Raw::ptr,
    FFI::Platypus::Legacy::Raw::int
- ) -> coderef;
+ )->coderef;
  
- *DESTROY = FFI::Platypus::Legacy::Raw -> new(
+ *DESTROY = FFI::Platypus::Legacy::Raw->new(
    $shared, 'foo_free',
    FFI::Platypus::Legacy::Raw::void,
    FFI::Platypus::Legacy::Raw::ptr
- ) -> coderef;
+ )->coderef;
  
  1;
  
  package main;
  
- my $foo = Foo -> new;
+ my $foo = Foo->new;
  
- $foo -> set_bar(42);
+ $foo->set_bar(42);
 
 =head1 DESCRIPTION
 
