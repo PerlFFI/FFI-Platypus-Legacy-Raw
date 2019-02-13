@@ -3,10 +3,9 @@ package FFI::Platypus::Legacy::Raw::MemPtr;
 use strict;
 use warnings;
 use Carp qw( croak );
-use FFI::Platypus::Legacy::Raw;
+use FFI::Platypus::Legacy::Raw::Platypus;
 use FFI::Platypus::Memory qw( malloc free memcpy );
 use FFI::Platypus::Buffer qw( scalar_to_buffer buffer_to_scalar );
-use FFI::Platypus::Legacy::Raw::Platypus;
 
 # ABSTRACT: FFI::Platypus::Legacy::Raw memory pointer type
 # VERSION

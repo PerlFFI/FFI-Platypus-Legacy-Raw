@@ -2,7 +2,6 @@ package FFI::Platypus::Legacy::Raw::Platypus;
 
 use strict;
 use warnings;
-use FFI::Platypus::Legacy::Raw;
 use FFI::Platypus;
 use base qw( Exporter );
 
@@ -44,7 +43,9 @@ sub _ffi_package ()
   {
     $package = FFI::Platypus->new;
     $package->lang('Raw');
-    $package->package('FFI::Platypus::Legacy::Raw', $INC{'FFI/Platypus/Legacy/Raw.pm'});
+    my $file = __FILE__;
+    $file =~ s{Raw/Platypus\.pm$}{Raw.pm};
+    $package->package('FFI::Platypus::Legacy::Raw', $file);
   }
 
   $package;
