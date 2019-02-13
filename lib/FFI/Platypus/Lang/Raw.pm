@@ -17,6 +17,8 @@ use base qw( FFI::Platypus::Lang::C );
 =head1 DESCRIPTION
 
 This is a "language" plugin for L<FFI::Platypus::Legacy::Raw> integration.
+Included are the same types provided by L<FFI::Platypus::Lang::C>, plus
+the types understood by Raw such as C<FFI::Platypus::Legacy::Raw::int()>.
 
 =head1 METHODS
 
