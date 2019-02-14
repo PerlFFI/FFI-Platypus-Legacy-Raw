@@ -9,7 +9,7 @@ use Env qw(@PATH);
 use File::Copy qw(cp);
 use File::Temp qw(tempdir);
 
-my($shared) = lib->test;
+my($shared) = ffi->test->lib;
 
 subtest 'argless' => sub {
 

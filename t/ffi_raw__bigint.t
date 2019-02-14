@@ -4,7 +4,7 @@ use lib 't/lib';
 use FFI::Raw;
 use bigint;
 
-my($shared) = lib->test;
+my($shared) = ffi->test->lib;
 
 subtest 'simple-args' => sub {
 

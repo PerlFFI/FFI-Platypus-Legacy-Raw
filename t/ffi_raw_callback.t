@@ -3,7 +3,7 @@ use Test2::Tools::FFI;
 use lib 't/lib';
 use FFI::Raw;
 
-my($shared) = lib->test;
+my($shared) = ffi->test->lib;
 
 subtest 'callbacks' => sub {
 

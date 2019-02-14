@@ -2,7 +2,7 @@ use Test2::V0 -no_srand => 1;
 use Test2::Tools::FFI;
 use FFI::Platypus::Legacy::Raw;
 
-my($shared) = lib->test;
+my($shared) = ffi->test->lib;
 
 subtest 'argless' => sub {
 
