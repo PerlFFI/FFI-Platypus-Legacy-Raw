@@ -43,6 +43,7 @@ sub new
 {
   my($class, $size) = @_;
   my $ptr = malloc $size;
+  die "malloc failed" unless defined $ptr;
   bless \$ptr, $class;
 }
 
