@@ -1,14 +1,15 @@
 use Test2::V0 -no_srand => 1;
 use Test2::Tools::FFI;
-use FFI::Platypus::Legacy::Raw;
+use lib 't/lib';
+use FFI::Raw;
 
 my($shared) = lib->test;
 
 subtest 'callbacks' => sub {
 
-  my $take_one_int_callback = FFI::Platypus::Legacy::Raw->new(
+  my $take_one_int_callback = FFI::Raw->new(
     $shared, 'take_one_int_callback',
-    FFI::Platypus::Legacy::Raw::void, FFI::Platypus::Legacy::Raw::ptr
+    FFI::Raw::void, FFI::Raw::ptr
   );
 
   my $func1 = sub {
@@ -16,16 +17,16 @@ subtest 'callbacks' => sub {
     is($num, 42);
   };
 
-  my $cb1 = FFI::Platypus::Legacy::Raw::callback($func1, FFI::Platypus::Legacy::Raw::void, FFI::Platypus::Legacy::Raw::int);
+  my $cb1 = FFI::Raw::callback($func1, FFI::Raw::void, FFI::Raw::int);
 
   $take_one_int_callback->call($cb1);
   $take_one_int_callback->($cb1);
 
   ok(1, "survived the call");
 
-  my $return_int_callback = FFI::Platypus::Legacy::Raw->new(
+  my $return_int_callback = FFI::Raw->new(
     $shared, 'return_int_callback',
-    FFI::Platypus::Legacy::Raw::int, FFI::Platypus::Legacy::Raw::ptr
+    FFI::Raw::int, FFI::Raw::ptr
   );
 
   my $func2 = sub {
@@ -34,7 +35,7 @@ subtest 'callbacks' => sub {
     return $num + 15;
   };
 
-  my $cb2 = FFI::Platypus::Legacy::Raw::callback($func2, FFI::Platypus::Legacy::Raw::int, FFI::Platypus::Legacy::Raw::int);
+  my $cb2 = FFI::Raw::callback($func2, FFI::Raw::int, FFI::Raw::int);
 
   my $check1 = $return_int_callback->call($cb2);
   my $check2 = $return_int_callback->($cb2);
@@ -50,7 +51,7 @@ subtest 'callbacks' => sub {
     return $num + 15;
   };
 
-  my $cb3 = FFI::Platypus::Legacy::Raw::callback(\&func3, FFI::Platypus::Legacy::Raw::int, FFI::Platypus::Legacy::Raw::int);
+  my $cb3 = FFI::Raw::callback(\&func3, FFI::Raw::int, FFI::Raw::int);
 
   $check1 = $return_int_callback->call($cb3);
   $check2 = $return_int_callback->($cb3);
@@ -61,20 +62,20 @@ subtest 'callbacks' => sub {
   is($check2, (42 + 15), "returned @{[ (42+15) ]}");
 
   my $str_value = "foo";
-  my $cb4 = FFI::Platypus::Legacy::Raw::callback(sub { $str_value }, FFI::Platypus::Legacy::Raw::str);
+  my $cb4 = FFI::Raw::callback(sub { $str_value }, FFI::Raw::str);
 
   ok(1, "survived the call");
 
-  my $return_str_callback = FFI::Platypus::Legacy::Raw->new(
+  my $return_str_callback = FFI::Raw->new(
     $shared, 'return_str_callback',
-    FFI::Platypus::Legacy::Raw::void, FFI::Platypus::Legacy::Raw::ptr
+    FFI::Raw::void, FFI::Raw::ptr
   );
 
   $return_str_callback->call($cb4);
 
-  my $get_str_value = FFI::Platypus::Legacy::Raw->new(
+  my $get_str_value = FFI::Raw->new(
     $shared, 'get_str_value',
-    FFI::Platypus::Legacy::Raw::str,
+    FFI::Raw::str,
   );
 
   my $value = $get_str_value->call();
@@ -88,14 +89,14 @@ subtest 'callbacks' => sub {
 
   is($value, 'NULL', "returned 'NULL'");
 
-  my $reset = FFI::Platypus::Legacy::Raw->new(
+  my $reset = FFI::Raw->new(
     $shared, 'reset',
-    FFI::Platypus::Legacy::Raw::void,
+    FFI::Raw::void,
   );
 
   $reset->call();
-  my $buffer = FFI::Platypus::Legacy::Raw::MemPtr->new_from_buf("bar\0", length "bar\0");
-  my $cb5 = FFI::Platypus::Legacy::Raw::callback(sub { $buffer }, FFI::Platypus::Legacy::Raw::ptr);
+  my $buffer = FFI::Raw::MemPtr->new_from_buf("bar\0", length "bar\0");
+  my $cb5 = FFI::Raw::callback(sub { $buffer }, FFI::Raw::ptr);
 
   ok(1, "survived the call");
 
@@ -106,8 +107,8 @@ subtest 'callbacks' => sub {
   is($value, "bar", "returned bar");
 
   $reset->call();
-  $buffer = FFI::Platypus::Legacy::Raw::MemPtr->new_from_buf("baz\0", length "baz\0");
-  my $cb6 = FFI::Platypus::Legacy::Raw::callback(sub { $$buffer }, FFI::Platypus::Legacy::Raw::ptr);
+  $buffer = FFI::Raw::MemPtr->new_from_buf("baz\0", length "baz\0");
+  my $cb6 = FFI::Raw::callback(sub { $$buffer }, FFI::Raw::ptr);
 
   ok(1, "survived the call");
 
@@ -118,7 +119,7 @@ subtest 'callbacks' => sub {
   is($value, 'baz', "returned baz");
 
   $reset->call();
-  my $cb7 = FFI::Platypus::Legacy::Raw::callback(sub { undef }, FFI::Platypus::Legacy::Raw::ptr);
+  my $cb7 = FFI::Raw::callback(sub { undef }, FFI::Raw::ptr);
 
   ok(1, "survived the call");
 

@@ -1,6 +1,7 @@
 use Test2::V0 -no_srand => 1;
 use Test2::Tools::FFI;
-use FFI::Platypus::Legacy::Raw;
+use lib 't/lib';
+use FFI::Raw;
 
 my($shared) = lib->test;
 
@@ -11,46 +12,46 @@ subtest 'opaque' => sub {
 
     no warnings 'once';
 
-    use base qw(FFI::Platypus::Legacy::Raw::Ptr);
+    use base qw(FFI::Raw::Ptr);
 
-    *_foo_new = FFI::Platypus::Legacy::Raw->new(
+    *_foo_new = FFI::Raw->new(
       $shared, 'foo_new',
-      FFI::Platypus::Legacy::Raw::ptr
+      FFI::Raw::ptr
     )->coderef;
 
     sub new {
       bless shift->SUPER::new(_foo_new());
     }
 
-    *get_bar = FFI::Platypus::Legacy::Raw->new(
+    *get_bar = FFI::Raw->new(
       $shared, 'foo_get_bar',
-      FFI::Platypus::Legacy::Raw::int,
-      FFI::Platypus::Legacy::Raw::ptr
+      FFI::Raw::int,
+      FFI::Raw::ptr
     )->coderef;
 
-    *set_bar = FFI::Platypus::Legacy::Raw->new(
+    *set_bar = FFI::Raw->new(
       $shared, 'foo_set_bar',
-      FFI::Platypus::Legacy::Raw::void,
-      FFI::Platypus::Legacy::Raw::ptr,
-      FFI::Platypus::Legacy::Raw::int
+      FFI::Raw::void,
+      FFI::Raw::ptr,
+      FFI::Raw::int
     )->coderef;
 
-    *get_free_count = FFI::Platypus::Legacy::Raw->new(
+    *get_free_count = FFI::Raw->new(
       $shared, 'get_free_count',
-      FFI::Platypus::Legacy::Raw::int,
-      FFI::Platypus::Legacy::Raw::str
+      FFI::Raw::int,
+      FFI::Raw::str
     )->coderef;
 
-    *DESTROY = FFI::Platypus::Legacy::Raw->new(
+    *DESTROY = FFI::Raw->new(
       $shared, 'foo_free',
-      FFI::Platypus::Legacy::Raw::void,
-      FFI::Platypus::Legacy::Raw::ptr
+      FFI::Raw::void,
+      FFI::Raw::ptr
     )->coderef;
 
   }
 
   my $foo = Foo->new;
-  isa_ok $foo, 'FFI::Platypus::Legacy::Raw::Ptr';
+  isa_ok $foo, 'FFI::Raw::Ptr';
 
   $foo->set_bar(42);
 

@@ -1,6 +1,7 @@
 use Test2::V0 -no_srand => 1;
 use Test2::Tools::FFI;
-use FFI::Platypus::Legacy::Raw;
+use lib 't/lib';
+use FFI::Raw;
 use bigint;
 
 my($shared) = lib->test;
@@ -14,18 +15,18 @@ subtest 'simple-args' => sub {
   my $min_int64  = -2**63;
   my $max_uint64 = 2**64-1;
 
-  my $take_one_int64 = eval { FFI::Platypus::Legacy::Raw->new(
+  my $take_one_int64 = eval { FFI::Raw->new(
     $shared, 'take_one_int64',
-    FFI::Platypus::Legacy::Raw::void, FFI::Platypus::Legacy::Raw::int64
+    FFI::Raw::void, FFI::Raw::int64
   ) };
 
   skip_all 'test requires LLONG_MIN and ULLONG_MAX' if $@;
 
   $take_one_int64->call($min_int64);
 
-  my $take_one_uint64 = FFI::Platypus::Legacy::Raw->new(
+  my $take_one_uint64 = FFI::Raw->new(
     $shared, 'take_one_uint64',
-    FFI::Platypus::Legacy::Raw::void, FFI::Platypus::Legacy::Raw::uint64
+    FFI::Raw::void, FFI::Raw::uint64
   );
 
   $take_one_uint64->call($max_uint64);
