@@ -54,4 +54,16 @@ subtest 'platypus types' => sub {
 
 };
 
+subtest 'platypus interface' => sub {
+
+  isa_ok(FFI::Platypus::Legacy::Raw->platypus('libfoo.so'), 'FFI::Platypus');
+
+  eval {
+    FFI::Platypus::Legacy::Raw->platypus(undef);
+  };
+
+  like $@, qr/cannot get platypus instance for undef lib/;
+
+};
+
 done_testing;

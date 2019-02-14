@@ -387,6 +387,41 @@ sub attach
   $self->[0]->attach($perl_name, $proto);
 }
 
+=head2 platypus
+
+ my $ffi = FFI::Platypus::Legacy::Raw->platypus($library);
+
+Returns the L<FFI::Platypus> instance used internally by this
+module.  This can be useful to customize for your particular
+library.  Adding types can be useful.
+
+ my $lib = 'libfoo.so';
+ my $ffi = FFI::Platypus::Legacy::Raw->platypus($lib);
+ $ffi->type('int[42]' => 'my_int_42');
+ my $f = FFI::Platypus::Legacy::Raw->new(
+   $lib, 'my_array_sum',
+   'int', 'my_int_64',
+ );
+ my $sum = $f->call([1..42]);
+
+You CANNOT get the platypus instance for C<undef> (libc and
+other codes already linked into the currently running Perl)
+using this interface, as that is somewhat "global" and adding
+types or other customizations there could break other modules.
+
+=cut
+
+sub platypus
+{
+  my(undef, $library) = @_;
+  unless(defined $library)
+  {
+    require Carp;
+    Carp::croak("cannot get platypus instance for undef lib");
+  }
+  _ffi $library;
+}
+
 =head2 mix and match types
 
 You can mix and match L<FFI::Raw> and L<FFI::Platypus> types.

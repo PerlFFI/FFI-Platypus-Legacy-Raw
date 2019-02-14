@@ -225,6 +225,28 @@ important feature that [FFI::Platypus](https://metacpan.org/pod/FFI::Platypus) p
 does not.  calling an attached xsub is much faster than 
 calling an unattached function.
 
+## platypus
+
+    my $ffi = FFI::Platypus::Legacy::Raw->platypus($library);
+
+Returns the [FFI::Platypus](https://metacpan.org/pod/FFI::Platypus) instance used internally by this
+module.  This can be useful to customize for your particular
+library.  Adding types can be useful.
+
+    my $lib = 'libfoo.so';
+    my $ffi = FFI::Platypus::Legacy::Raw->platypus($lib);
+    $ffi->type('int[42]' => 'my_int_42');
+    my $f = FFI::Platypus::Legacy::Raw->new(
+      $lib, 'my_array_sum',
+      'int', 'my_int_64',
+    );
+    my $sum = $f->call([1..42]);
+
+You CANNOT get the platypus instance for `undef` (libc and
+other codes already linked into the currently running Perl)
+using this interface, as that is somewhat "global" and adding
+types or other customizations there could break other modules.
+
 ## mix and match types
 
 You can mix and match [FFI::Raw](https://metacpan.org/pod/FFI::Raw) and [FFI::Platypus](https://metacpan.org/pod/FFI::Platypus) types.

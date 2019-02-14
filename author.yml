@@ -27,6 +27,8 @@ pod_spelling_system:
     - dsteinbrunner
     - ghedo
     - xsub
+    - libc
+    - customizations
 
 pod_coverage:
   skip: 0
