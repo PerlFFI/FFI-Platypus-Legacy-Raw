@@ -225,6 +225,20 @@ important feature that [FFI::Platypus](https://metacpan.org/pod/FFI::Platypus) p
 does not.  calling an attached xsub is much faster than 
 calling an unattached function.
 
+## mix and match types
+
+You can mix and match [FFI::Raw](https://metacpan.org/pod/FFI::Raw) and [FFI::Platypus](https://metacpan.org/pod/FFI::Platypus) types.
+The main benefit is that you get the more rigorous type system
+as described above in the TYPES caveat.
+
+There is an overhead to the `FFI::Platypus::Legacy:Raw::ptr`
+type in order to handle the various pointer types (
+[FFI::Platypus::Legacy::Raw::Ptr](https://metacpan.org/pod/FFI::Platypus::Legacy::Raw::Ptr),
+[FFI::Platypus::Legacy::Raw::MemPtr](https://metacpan.org/pod/FFI::Platypus::Legacy::Raw::MemPtr),
+[FFI::Platypus::Legacy::Raw::Callback](https://metacpan.org/pod/FFI::Platypus::Legacy::Raw::Callback)).  If you aren't using
+those classes, then you can save a few cycles by instead using
+the Platypus `opaque` type.
+
 # SEE ALSO
 
 [FFI::Platypus](https://metacpan.org/pod/FFI::Platypus), [Alt::FFI::Raw::Platypus](https://metacpan.org/pod/Alt::FFI::Raw::Platypus)

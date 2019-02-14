@@ -387,6 +387,20 @@ sub attach
   $self->[0]->attach($perl_name, $proto);
 }
 
+=head2 mix and match types
+
+You can mix and match L<FFI::Raw> and L<FFI::Platypus> types.
+The main benefit is that you get the more rigorous type system
+as described above in the TYPES caveat.
+
+There is an overhead to the C<FFI::Platypus::Legacy:Raw::ptr>
+type in order to handle the various pointer types (
+L<FFI::Platypus::Legacy::Raw::Ptr>,
+L<FFI::Platypus::Legacy::Raw::MemPtr>,
+L<FFI::Platypus::Legacy::Raw::Callback>).  If you aren't using
+those classes, then you can save a few cycles by instead using
+the Platypus C<opaque> type.
+
 =head1 SEE ALSO
 
 L<FFI::Platypus>, L<Alt::FFI::Raw::Platypus>

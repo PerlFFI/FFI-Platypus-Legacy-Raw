@@ -33,4 +33,25 @@ subtest 'simple-args' => sub {
   take_misc_ints(101, 102, 103);
 };
 
+subtest 'platypus types' => sub {
+
+  my $malloc = FFI::Platypus::Legacy::Raw->new(
+    undef, 'malloc',
+    'opaque', 'size_t',
+  );
+
+  my $free = FFI::Platypus::Legacy::Raw->new(
+    undef, 'free',
+    'void', 'opaque',
+  );
+
+  my $ptr = $malloc->call(400);
+  like $ptr, qr/^[0-9]+/, 'malloc';
+  note "ptr = $ptr";
+
+  $free->call($ptr);
+  ok 'free';
+
+};
+
 done_testing;
