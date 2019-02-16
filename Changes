@@ -1,6 +1,7 @@
 Revision history for FFI-Platypus-Legacy-Raw
 
 {{$NEXT}}
+  - Fix configure prereqs
 
 0.02      2019-02-16 09:34:59 -0500
   - First CPAN release
