@@ -10,6 +10,7 @@ my %modules;
 my $post_diag;
 
 $modules{$_} = $_ for qw(
+  Alien::libt2t
   ExtUtils::MakeMaker
   FFI::Build
   FFI::Build::MM
