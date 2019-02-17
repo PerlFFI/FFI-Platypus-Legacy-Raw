@@ -4,6 +4,7 @@
 #include <string.h>
 #include <inttypes.h>
 #include <stdio.h>
+#include <math.h>
 #include <t2t/simple.h>
 
 extern void
