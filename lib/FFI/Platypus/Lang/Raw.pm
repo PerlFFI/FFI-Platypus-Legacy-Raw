@@ -42,7 +42,7 @@ sub native_type_map
       'x' => 'sint64',
       'X' => 'uint64',
       'i' => 'sint32',
-      'I' => 'sint64',
+      'I' => 'uint32',
       'z' => 'sint16',
       'Z' => 'uint16',
       'c' => 'sint8',

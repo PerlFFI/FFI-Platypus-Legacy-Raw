@@ -1,6 +1,8 @@
 Revision history for FFI-Platypus-Legacy-Raw
 
 {{$NEXT}}
+  - Fix bug where uint was incorrectly mapped to sint64 instead of
+    uint32 it should have been.  (reported as gh#1)
 
 0.04      2019-02-17 10:25:06 -0500
   - Test fixes
