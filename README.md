@@ -1,18 +1,20 @@
-# FFI::Platypus::Legacy::Raw [![Build Status](https://secure.travis-ci.org/Perl5-FFI/FFI-Platypus-Legacy-Raw.png)](http://travis-ci.org/Perl5-FFI/FFI-Platypus-Legacy-Raw)
+# FFI::Platypus::Legacy::Raw [![Build Status](https://travis-ci.org/PerlFFI/FFI-Platypus-Legacy-Raw.svg)](http://travis-ci.org/PerlFFI/FFI-Platypus-Legacy-Raw)
 
 Perl bindings to the portable FFI library (libffi)
 
 # SYNOPSIS
 
-    use FFI::Platypus::Legacy::Raw;
-    
-    my $cos = FFI::Platypus::Legacy::Raw->new(
-      'libm.so', 'cos',
-      FFI::Platypus::Legacy::Raw::double, # return value
-      FFI::Platypus::Legacy::Raw::double  # arg #1
-    );
-    
-    say $cos->call(2.0);
+```perl
+use FFI::Platypus::Legacy::Raw;
+
+my $cos = FFI::Platypus::Legacy::Raw->new(
+  'libm.so', 'cos',
+  FFI::Platypus::Legacy::Raw::double, # return value
+  FFI::Platypus::Legacy::Raw::double  # arg #1
+);
+
+say $cos->call(2.0);
+```
 
 # DESCRIPTION
 
@@ -40,7 +42,9 @@ Note that this module has nothing to do with [FFI](https://metacpan.org/pod/FFI)
 
 ## new
 
-    my $ffi = FFI::Platypus::Legacy::Raw->new( $library, $function, $return_type, @arg_types )
+```perl
+my $ffi = FFI::Platypus::Legacy::Raw->new( $library, $function, $return_type, @arg_types )
+```
 
 Create a new `FFI::Platypus::Legacy::Raw` object. It loads `$library`, finds the function
 `$function` with return type `$return_type` and creates a calling interface.
@@ -52,7 +56,9 @@ of the wanted function.
 
 ## new\_from\_ptr
 
-    my $ffi = FFI::Platypus::Legacy::Raw->new_from_ptr( $function_ptr, $return_type, @arg_types )
+```perl
+my $ffi = FFI::Platypus::Legacy::Raw->new_from_ptr( $function_ptr, $return_type, @arg_types )
+```
 
 Create a new `FFI::Platypus::Legacy::Raw` object from the `$function_ptr` function pointer.
 
@@ -63,7 +69,9 @@ of the wanted function.
 
 ## call
 
-    my $ret = $ffi->call( @args)
+```perl
+my $ret = $ffi->call( @args)
+```
 
 Execute the `FFI::Platypus::Legacy::Raw` function. This method also takes a variable number of
 arguments, which are passed to the called function. The argument types must
@@ -72,14 +80,18 @@ match the types passed to `new` (or `new_from_ptr`).
 The `FFI::Platypus::Legacy::Raw` object can be used as a CODE reference as well. Dereferencing
 the object will work just like call():
 
-    $cos->call(2.0); # normal call() call
-    $cos->(2.0);     # dereference as CODE ref
+```
+$cos->call(2.0); # normal call() call
+$cos->(2.0);     # dereference as CODE ref
+```
 
 This works because FFI::Platypus::Legacy::Raw overloads the `&{}` operator.
 
 ## coderef
 
-    my $code = FFI::Platypus::Legacy::Raw->coderef;
+```perl
+my $code = FFI::Platypus::Legacy::Raw->coderef;
+```
 
 Return a code reference of a given `FFI::Platypus::Legacy::Raw`.
 
@@ -87,13 +99,17 @@ Return a code reference of a given `FFI::Platypus::Legacy::Raw`.
 
 ## memptr
 
-    my $memptr = FFI::Platypus::Legacy::Raw::memptr( $length );
+```perl
+my $memptr = FFI::Platypus::Legacy::Raw::memptr( $length );
+```
 
 Create a [FFI::Platypus::Legacy::Raw::MemPtr](https://metacpan.org/pod/FFI::Platypus::Legacy::Raw::MemPtr). This is a shortcut for `FFI::Platypus::Legacy::Raw::MemPtr->new(...)`.
 
 ## callback
 
-    my $callback = FFI::Platypus::Legacy::Raw::callback( $coderef, $ret_type, \@arg_types );
+```perl
+my $callback = FFI::Platypus::Legacy::Raw::callback( $coderef, $ret_type, \@arg_types );
+```
 
 Create a [FFI::Platypus::Legacy::Raw::Callback](https://metacpan.org/pod/FFI::Platypus::Legacy::Raw::Callback). This is a shortcut for `FFI::Platypus::Legacy::Raw::Callback->new(...)`.
 
@@ -117,92 +133,122 @@ you can use `sint8` instead.
 
 ## void
 
-    my $type = FFI::Platypus::Legacy::Raw::void();
+```perl
+my $type = FFI::Platypus::Legacy::Raw::void();
+```
 
 Return a `FFI::Platypus::Legacy::Raw` void type.
 
 ## int
 
-    my $type = FFI::Platypus::Legacy::Raw::int();
+```perl
+my $type = FFI::Platypus::Legacy::Raw::int();
+```
 
 Return a `FFI::Platypus::Legacy::Raw` integer type.
 
 ## uint
 
-    my $type = FFI::Platypus::Legacy::Raw::uint();
+```perl
+my $type = FFI::Platypus::Legacy::Raw::uint();
+```
 
 Return a `FFI::Platypus::Legacy::Raw` unsigned integer type.
 
 ## short
 
-    my $type = FFI::Platypus::Legacy::Raw::short();
+```perl
+my $type = FFI::Platypus::Legacy::Raw::short();
+```
 
 Return a `FFI::Platypus::Legacy::Raw` short integer type.
 
 ## ushort
 
-    my $type = FFI::Platypus::Legacy::Raw::ushort();
+```perl
+my $type = FFI::Platypus::Legacy::Raw::ushort();
+```
 
 Return a `FFI::Platypus::Legacy::Raw` unsigned short integer type.
 
 ## long
 
-    my $type = FFI::Platypus::Legacy::Raw::long();
+```perl
+my $type = FFI::Platypus::Legacy::Raw::long();
+```
 
 Return a `FFI::Platypus::Legacy::Raw` long integer type.
 
 ## ulong
 
-    my $type = FFI::Platypus::Legacy::Raw::ulong();
+```perl
+my $type = FFI::Platypus::Legacy::Raw::ulong();
+```
 
 Return a `FFI::Platypus::Legacy::Raw` unsigned long integer type.
 
 ## int64
 
-    my $type = FFI::Platypus::Legacy::Raw::int64();
+```perl
+my $type = FFI::Platypus::Legacy::Raw::int64();
+```
 
 Return a `FFI::Platypus::Legacy::Raw` 64 bit integer type. This requires [Math::Int64](https://metacpan.org/pod/Math::Int64) to work.
 
 ## uint64
 
-    my $type = FFI::Platypus::Legacy::Raw::uint64();
+```perl
+my $type = FFI::Platypus::Legacy::Raw::uint64();
+```
 
 Return a `FFI::Platypus::Legacy::Raw` unsigned 64 bit integer type. This requires [Math::Int64](https://metacpan.org/pod/Math::Int64) 
 to work.
 
 ## char
 
-    my $type = FFI::Platypus::Legacy::Raw::char();
+```perl
+my $type = FFI::Platypus::Legacy::Raw::char();
+```
 
 Return a `FFI::Platypus::Legacy::Raw` char type.
 
 ## uchar
 
-    my $type = FFI::Platypus::Legacy::Raw::uchar();
+```perl
+my $type = FFI::Platypus::Legacy::Raw::uchar();
+```
 
 Return a `FFI::Platypus::Legacy::Raw` unsigned char type.
 
 ## float
 
-    my $type = FFI::Platypus::Legacy::Raw::float();
+```perl
+my $type = FFI::Platypus::Legacy::Raw::float();
+```
 
 Return a `FFI::Platypus::Legacy::Raw` float type.
 
 ## double
 
-    my $type = FFI::Platypus::Legacy::Raw::double();
+```perl
+my $type = FFI::Platypus::Legacy::Raw::double();
+```
 
 Return a `FFI::Platypus::Legacy::Raw` double type.
 
 ## str
 
-    my $type = FFI::Platypus::Legacy::Raw::str();
+```perl
+my $type = FFI::Platypus::Legacy::Raw::str();
+```
 
 Return a `FFI::Platypus::Legacy::Raw` string type.
 
 ## ptr
 
-    my $type = FFI::Platypus::Legacy::Raw::ptr();
+```perl
+my $type = FFI::Platypus::Legacy::Raw::ptr();
+```
 
 Return a `FFI::Platypus::Legacy::Raw` pointer type.
 
@@ -215,10 +261,12 @@ on switching back to [FFI::Raw](https://metacpan.org/pod/FFI::Raw).
 
 ## attach
 
-    $ffi->attach;  # allowed for functions specified by name
-                   # but not by address/pointer
-    $ffi->attach($name);
-    $ffi->attach($name, $prototype);
+```
+$ffi->attach;  # allowed for functions specified by name
+               # but not by address/pointer
+$ffi->attach($name);
+$ffi->attach($name, $prototype);
+```
 
 Attach the function as an xsub.  This is probably the most
 important feature that [FFI::Platypus](https://metacpan.org/pod/FFI::Platypus) provides that [FFI::Raw](https://metacpan.org/pod/FFI::Raw)
@@ -227,20 +275,24 @@ calling an unattached function.
 
 ## platypus
 
-    my $ffi = FFI::Platypus::Legacy::Raw->platypus($library);
+```perl
+my $ffi = FFI::Platypus::Legacy::Raw->platypus($library);
+```
 
 Returns the [FFI::Platypus](https://metacpan.org/pod/FFI::Platypus) instance used internally by this
 module.  This can be useful to customize for your particular
 library.  Adding types can be useful.
 
-    my $lib = 'libfoo.so';
-    my $ffi = FFI::Platypus::Legacy::Raw->platypus($lib);
-    $ffi->type('int[42]' => 'my_int_42');
-    my $f = FFI::Platypus::Legacy::Raw->new(
-      $lib, 'my_array_sum',
-      'int', 'my_int_64',
-    );
-    my $sum = $f->call([1..42]);
+```perl
+my $lib = 'libfoo.so';
+my $ffi = FFI::Platypus::Legacy::Raw->platypus($lib);
+$ffi->type('int[42]' => 'my_int_42');
+my $f = FFI::Platypus::Legacy::Raw->new(
+  $lib, 'my_array_sum',
+  'int', 'my_int_64',
+);
+my $sum = $f->call([1..42]);
+```
 
 You CANNOT get the platypus instance for `undef` (libc and
 other codes already linked into the currently running Perl)
