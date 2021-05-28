@@ -14,14 +14,16 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
+      fail-fast: false
       matrix:
         cip_tag:
-          - "5.33"
+          - "5.35"
+          - "5.34"
+          - "5.34-threads"
+          - "5.34-longdouble"
+          - "5.34-quadmath"
+          - "5.34-ffimaster"
           - "5.32"
-          - "5.32-threads"
-          - "5.32-longdouble"
-          - "5.32-quadmath"
-          - "5.32-ffimaster"
           - "5.30"
           - "5.28"
           - "5.26"
@@ -78,3 +80,8 @@ jobs:
       - name: Build + Test
         run: |
           cip script
+
+      - name: CPAN log
+        if: ${{ failure() }}
+        run: |
+          cip exec bash -c 'cat $HOME/.cpanm/latest-build/build.log'
